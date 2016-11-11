@@ -14,7 +14,7 @@ app.use(express.static(path.join(__dirname, 'docs/public')));
 
 routes(app);
 
-const port = process.env.devPort || process.env.PORT || 1337;
+const port = process.env.devPort || 1337;
 console.log(`server is listening on port ${port}`);
 
 app.listen(port);
