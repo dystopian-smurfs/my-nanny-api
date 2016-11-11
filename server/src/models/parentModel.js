@@ -1,11 +1,11 @@
-const Sequelize = require('sequelize');
-const db = require('../connection');
+import Sequelize from 'sequelize';
+import db from '../connection';
 
 const Parent = db.define('parent', {
   householdName: Sequelize.STRING,
   token: Sequelize.STRING,
-  alexaId: Sequelize.STRING,
+  amazonId: Sequelize.STRING,
   timeZone: Sequelize.STRING,
 });
 
-module.exports = Parent;
+export default Parent;
