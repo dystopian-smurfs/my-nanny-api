@@ -1,8 +1,8 @@
-const Sequelize = require('sequelize');
-const db = require('../connection');
+import Sequelize from 'sequelize';
+import db from '../connection';
 
 const Schedule = db.define('schedule', {
-  lastStart: Sequelize.INTEGER,
+  utcLastReset: Sequelize.INTEGER,
 });
 
-module.exports = Schedule;
+export default Schedule;

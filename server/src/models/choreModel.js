@@ -1,11 +1,11 @@
-const Sequelize = require('sequelize');
-const db = require('../connection');
+import Sequelize from 'sequelize';
+import db from '../connection';
 
 const Chore = db.define('chore', {
   title: Sequelize.STRING,
   description: Sequelize.STRING,
-  setTime: Sequelize.INTEGER,
+  utc: Sequelize.INTEGER,
   status: Sequelize.BOOLEAN,
 });
 
-module.exports = Chore;
+export default Chore;
