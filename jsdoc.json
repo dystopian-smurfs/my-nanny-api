@@ -1,0 +1,16 @@
+{
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc","closure"]
+    },
+    "source": {
+        "include": ["server/src"],
+        "includePattern": ".+\\.js(doc|x)?$",
+        "excludePattern": "(^|\\/|\\\\)_"
+    },
+    "plugins": [],
+    "templates": {
+        "cleverLinjsdoc myProject/c.js -c /path/to/my/conf.json -rks": false,
+        "monospaceLinks": false
+    }
+}

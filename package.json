@@ -5,7 +5,8 @@
   "main": "server/src/server.js",
   "scripts": {
     "start": "nodemon -w server/src --exec \"babel-node server/src/server.js --presets es2015,stage-0\"",
-    "test": "./node_modules/.bin/mocha \"server/test/**/*Spec.js\" --compilers js:babel-core/register --reporter spec"
+    "test": "./node_modules/.bin/mocha \"server/test/**/*Spec.js\" --compilers js:babel-core/register --reporter spec",
+    "doc": "./node_modules/.bin/jsdoc -c ./jsdoc.json -r -d ./docServer/public && cd ./docServer && npm run build"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
     "body-parser": "^1.15.2",
     "eslint-config-hackreactor": "github:hackreactor-labs/eslint-config-hackreactor",
     "express": "^4.14.0",
+    "jsdoc": "^3.4.3",
     "mysql": "^2.12.0",
     "nodemon": "^1.11.0",
     "sequelize": "^3.25.0"
