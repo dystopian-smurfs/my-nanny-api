@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon -w server/src --exec \"babel-node server/src/server.js --presets es2015,stage-0\"",
     "test": "./node_modules/.bin/mocha \"server/test/**/*Spec.js\" --compilers js:babel-core/register --reporter spec",
-    "doc": "./node_modules/.bin/jsdoc -c ./jsdoc.json -r -d ./docServer/public && cd ./docServer && npm run build"
+    "doc": "./node_modules/.bin/jsdoc -c ./jsdoc.json -r -d ./server/src/docs && npm run deployDocs",
+    "deployDocs": "git add server/src/docs/ && git commit -m 'Update docs' && git push heroku master"
   },
   "repository": {
     "type": "git",

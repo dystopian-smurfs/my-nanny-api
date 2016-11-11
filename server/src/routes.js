@@ -2,6 +2,8 @@ import ChoresController from './controllers/ChoresController';
 import UserController from './controllers/UserController';
 
 const routes = function (app) {
+  ///////// DOCS /////////////
+  app.get('/', (req, res) => res.render('index', { title: 'my-nanny docs' }));
 
   ///////// USERS //////////////
   app.post('/login',  UserController.login);

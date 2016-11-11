@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import path from 'path';
 import routes from './routes';
 // These imports start the connection and model relationships
 import connection from './connection';
@@ -9,10 +10,11 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'docs/public')));
 
 routes(app);
 
-const port = process.env.devPort || 1337;
+const port = process.env.devPort || process.env.PORT || 1337;
 console.log(`server is listening on port ${port}`);
 
 app.listen(port);
