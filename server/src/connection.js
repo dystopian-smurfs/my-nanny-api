@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+import Sequelize from 'sequelize';
 
 const getConnection = () =>
   new Sequelize('test', 'root', '', {
@@ -15,4 +15,4 @@ connection
   .then(() => console.log('Sequelize connection has been established successfully.'))
   .catch(err => console.log('Unable to connect to the database:', err));
 
-module.exports = connection;
+export default connection;
