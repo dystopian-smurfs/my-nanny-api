@@ -9,8 +9,8 @@ const childRepository = {
     * @param data.name - Child's first name
     * @param data.phone - Child's phone number
   */
-  create: function createChild({ name, phone }) {
-    return Child.build({ name, phone });
+  create: function createChild(parent, { name, phone }) {
+    return Child.build(Object.assign({}, { parentId: parent.get('id') }, { name, phone }));
   },
   /**
     * @function update

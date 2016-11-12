@@ -9,36 +9,50 @@ import choreRepository from '../repositories/choreRepository';
 import scheduleRepository from '../repositories/scheduleRepository';
 import curfewRepository from '../repositories/curfewRepository';
 
-/** @module Services: Parent */
-const parentServices = {
+/** @module Services: Child */
+const childServices = {
   /**
     * @function findAccountByAmazonId
+    * @desc Finds all children of a parent based on their name
+    * @param {object} child
+    * @param {string} child.name
     * @param {string} amazonId - The amazonId of the parent
+    * @param {callback} cb - The callback to be done after the promise resolves
    */
-  findAccountByAmazonId: amazonId =>
-    Parent.findOne({ where: { amazonId } }),
+  findAllByAmazonId: ({ name }, amazonId, cb) => {
+    Parent.findOne({
+      where: {
+        amazonId,
+      },
+      include: [{
+        model: Child,
+        where: {
+          name,
+        },
+      }],
+    })
+    .then((foundParent) => {
+      if (foundParent) {
+        cb(foundParent.children);
+      } else {
+        cb([]);
+      }
+    });
+  },
 
   /**
     * @function findAccountByEmail
-    * @param {string} email - The email of the parent
+    * @param {string} email
    */
   findAccountByEmail: email =>
-    Parent.findOne({ where: { email } }),
+    Child.findOne({ where: { email } }),
 
   /**
     * @function findAccountByPhone
-    * @param {string} phone - The phone number of the parent
+    * @param {string} phone
    */
   findAccountByPhone: phone =>
-    Parent.findOne({ where: { phone } }),
-
-  /**
-    * @function findAccountByUsername
-    * @param {string} username - The username of the parent
-  */
-  findAccountByUsername: username =>
-    Parent.findOne({ where: { username } }),
-
+    Child.findOne({ where: { phone } }),
 };
 
-export default parentServices;
+export default childServices;

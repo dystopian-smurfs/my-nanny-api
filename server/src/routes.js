@@ -10,6 +10,9 @@ const routes = (app) => {
   app.post('/logout', UserController.logout);
   app.post('/signup', UserController.signup);
 
+  /* /////// CHILDREN /////// */
+  app.post('/addChild', UserController.addChild);
+
   /* /////// CHORES //////// */
   app.get('/api/chores', ChoresController.readAll);
   app.get('/api/chores/:id', ChoresController.read);

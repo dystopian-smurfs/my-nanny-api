@@ -6,6 +6,7 @@ import Schedule from './models/scheduleModel';
 import Curfew from './models/curfewModel';
 
 const initializeModels = () => {
+  Child.belongsTo(Parent);
   Parent.hasMany(Child);
   Child.hasMany(Chore);
   Child.hasOne(Schedule);
