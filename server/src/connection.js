@@ -1,7 +1,8 @@
 import Sequelize from 'sequelize';
+import config from './config';
 
 const getConnection = () =>
-  new Sequelize('test', 'root', '', {
+  new Sequelize('test', config.username, config.password, {
     host: 'localhost',
     port: 3306,
     dialect: 'mysql',
