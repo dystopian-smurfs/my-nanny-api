@@ -2,3 +2,6 @@ node_modules/*
 .DS_Store
 server/src/docs/*
 server/src/config.js
+
+# Exception, this is so that the docs folder shows up in commits
+!.gitkeep
