@@ -8,6 +8,7 @@ import childRepository from '../repositories/childRepository';
 import choreRepository from '../repositories/choreRepository';
 import scheduleRepository from '../repositories/scheduleRepository';
 import curfewRepository from '../repositories/curfewRepository';
+import childServices from './childServices';
 import parentServices from './parentServices';
 import db from '../connection';
 
@@ -63,13 +64,19 @@ const accountServices = {
     parentServices.findAccountByAmazonId(data.parent.amazonId)
     .then((parent) => {
       if (!parent) {
-        // If parent does not exist
-        cb('Cannot add child.');
+        cb('Cannot add child, parent does not exist.');
       } else {
-        const newChild = childRepository.create(data.child);
-        newChild.save()
-        .then(() => parent.addChild(newChild))
-        .then(() => cb('Successfully added child.'));
+        childServices.findAllByAmazonId(data.child, data.parent.amazonId, (children) => {
+          console.log('CHILDREN: ', children);
+          if (children.length) {
+            cb('Child already exists');
+          } else {
+            const newChild = childRepository.create(parent, data.child);
+            newChild.save();
+            parent.addChild(newChild);
+            cb('Child successfully added.');
+          }
+        });
       }
     });
   },
