@@ -1,10 +1,10 @@
 import Child from '../models/childModel';
-
-/** @namespace childRepository */
+/**
+  * @module Repository: Child
+*/
 const childRepository = {
   /**
     * @function create
-    * @memberof childRepository
     * @param {object} data
     * @param data.name - Child's first name
     * @param data.phone - Child's phone number
@@ -14,9 +14,8 @@ const childRepository = {
   },
   /**
     * @function update
-    * @memberof childRepository
-    * @param {object} child - Instance of a child from the db.
-    * @param {object} changedAttributes - Obj with the keys and attributes to be updated.
+    * @param {object} child - Instance of a child from the db
+    * @param {object} changedAttributes - Obj with the keys and attributes to be updated
   */
   update: (child, changedAttributes) => {
     child.update(changedAttributes)
@@ -27,7 +26,6 @@ const childRepository = {
   },
   /**
     * @function destroy
-    * @memberof childRepository
     * @param {object} child - Instance of a child from the db.
   */
   destroy: child => child.destroy(),

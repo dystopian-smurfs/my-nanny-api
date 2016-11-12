@@ -1,11 +1,19 @@
+import accountServices from '../services/accountServices';
+
 const UserController = {
-  login: function (req, res) {
+  login: (req, res) => {
     res.send('User login is not implemented yet');
   },
 
-  logout: function(req, res) {
+  logout: (req, res) => {
     res.send('User logout is not implemented yet');
-  }
+  },
+
+  signup: (req, res) => {
+    accountServices.createNewAccount(req.body.parent,
+      status => res.send(status)
+  );
+  },
 };
 
 export default UserController;

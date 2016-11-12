@@ -17,7 +17,7 @@ initializeModels();
 
 // Sync the database
 db
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => console.log('Successfully synced models'))
   .catch(err => console.log('An error occurred while creating the table:', err));
 

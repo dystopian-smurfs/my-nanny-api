@@ -10,38 +10,33 @@ import scheduleRepository from '../repositories/scheduleRepository';
 import curfewRepository from '../repositories/curfewRepository';
 import parentServices from './parentServices';
 
-/** @namespace accountServices */
+/** @module Services: Account */
 const accountServices = {
   /**
     * @function createNewAccount
     * @memberof accountServices
-    * @param {object} data - Contains a parent object and an array of children objects.
-    * @param {object} data.parent - The parent object to be created.
-    * @param {number} data.parent.householdName - The householdName for the account.
-    * @param {string} data.parent.token - The token given my Amazon's OAuth.
-    * @param {string} data.parent.amazonId - The parent's Amazon Id.
-    * @param {number} data.parent.timeZone - What time zone the parent is in.
-    * @param {object} data.parent.phone - The parent's phone number.
-    * @param {object} data.parent.email - The parent's email.
-    * @param {object} data.children - An array of children to be created for the Parent.
-    * @param {object} data.children.child.name - The child's first name.
-    * @param {object} data.children.child.phone - The child's phone number.
+    * @param {object} data - Contains a parent object and an array of children objects
+    * @param {object} data.parent - The parent object to be created
+    * @param {string} data.parent.username
+    * @param {string} data.parent.token - The token given my Amazon's OAuth
+    * @param {string} data.parent.amazonId - The parent's Amazon Id
+    * @param {string} data.parent.timeZone
+    * @param {object} data.parent.phone
+    * @param {object} data.parent.email
    */
-  createNewAccount: (data) => {
+  createNewAccount: (data, cb) => {
     // Check if alexa account exists
-    const parent = parentServices.findAccountByAmazonId(data.amazonId);
-    if (!parent) {
-      // If parent does exist, return an error
-    } else {
-      const newParent = parentRepository.create(data);
-      newParent.save();
-      // Create as many children as the data.children array has
-      const children = data.children.map(child => childRepository.create(child));
-      children.forEach((child) => {
-        newParent.setChild(child);
-        child.save();
-      });
-    }
+    parentServices.findAccountByAmazonId(data.amazonId)
+    .then((parent) => {
+      if (parent) {
+        // If parent does exist, return an error
+        cb('Failed to create account.');
+      } else {
+        const newParent = parentRepository.create(data);
+        newParent.save();
+        cb('Successfully created account.');
+      }
+    });
   },
 
 

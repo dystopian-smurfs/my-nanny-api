@@ -9,26 +9,26 @@ import choreRepository from '../repositories/choreRepository';
 import scheduleRepository from '../repositories/scheduleRepository';
 import curfewRepository from '../repositories/curfewRepository';
 
-/** @namespace parentServices */
+/** @module Services: Parent */
 const parentServices = {
   /**
     * @function findAccountByAmazonId
     * @memberof parentServices
-    * @param {string} amazonId - The amazonId of the parent.
+    * @param {string} amazonId - The amazonId of the parent
    */
   findAccountByAmazonId: amazonId =>
     Parent.findOne({ where: { amazonId } }),
   /**
     * @function findAccountByEmail
     * @memberof parentServices
-    * @param {string} email - The email of the parent.
+    * @param {string} email - The email of the parent
    */
   findAccountByEmail: email =>
     Parent.findOne({ where: { email } }),
   /**
     * @function findAccountByPhone
     * @memberof parentServices
-    * @param {number} phone - The phone of the parent.
+    * @param {number} phone - The phone number of the parent
    */
   findAccountByPhone: phone =>
     Parent.findOne({ where: { phone } }),
