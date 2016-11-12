@@ -12,6 +12,7 @@ const childRepository = {
   create: function createChild(parent, { name, phone }) {
     return Child.build(Object.assign({}, { parentId: parent.get('id') }, { name, phone }));
   },
+
   /**
     * @function update
     * @param {object} child - Instance of a child from the db
@@ -24,6 +25,7 @@ const childRepository = {
       return res;
     });
   },
+
   /**
     * @function destroy
     * @param {object} child - Instance of a child from the db.
