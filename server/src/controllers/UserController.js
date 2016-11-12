@@ -10,9 +10,7 @@ const UserController = {
   },
 
   signup: (req, res) => {
-    accountServices.createNewAccount(req.body.parent,
-      status => res.send(status)
-  );
+    accountServices.createNewAccount(req.body.parent, status => res.send(status));
   },
 };
 
