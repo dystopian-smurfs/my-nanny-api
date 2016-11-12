@@ -14,27 +14,41 @@ import parentServices from './parentServices';
 const accountServices = {
   /**
     * @function createNewAccount
-    * @memberof accountServices
-    * @param {object} data - Contains a parent object and an array of children objects
-    * @param {object} data.parent - The parent object to be created
-    * @param {string} data.parent.username
-    * @param {string} data.parent.token - The token given my Amazon's OAuth
-    * @param {string} data.parent.amazonId - The parent's Amazon Id
-    * @param {string} data.parent.timeZone
-    * @param {object} data.parent.phone
-    * @param {object} data.parent.email
+    * @param {object} data - An object with new parent info
+    * @param {string} data.username
+    * @param {string} data.token - The token given my Amazon's OAuth
+    * @param {string} data.amazonId - The parent's Amazon Id
+    * @param {string} data.timeZone
+    * @param {object} data.phone
+    * @param {object} data.email
    */
   createNewAccount: (data, cb) => {
-    // Check if alexa account exists
     parentServices.findAccountByAmazonId(data.amazonId)
     .then((parent) => {
       if (parent) {
-        // If parent does exist, return an error
+        // If parent exists already, return an error
         cb('Failed to create account.');
       } else {
         const newParent = parentRepository.create(data);
         newParent.save();
         cb('Successfully created account.');
+      }
+    });
+  },
+  /**
+    * @function login
+    * @param {object} data - Contains a parent/user login
+    * @param {string} data.username
+    * @param {string} data.amazonId
+  */
+  login: (data, cb) => {
+    parentServices.findAccountByAmazonId(data.amazonId)
+    .then((parent) => {
+      if (parent) {
+        // If parent exists, login
+        cb('Successfully logged in.');
+      } else {
+        cb('Failed to log in.');
       }
     });
   },

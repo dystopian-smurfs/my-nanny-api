@@ -13,26 +13,31 @@ import curfewRepository from '../repositories/curfewRepository';
 const parentServices = {
   /**
     * @function findAccountByAmazonId
-    * @memberof parentServices
     * @param {string} amazonId - The amazonId of the parent
    */
   findAccountByAmazonId: amazonId =>
     Parent.findOne({ where: { amazonId } }),
+
   /**
     * @function findAccountByEmail
-    * @memberof parentServices
     * @param {string} email - The email of the parent
    */
   findAccountByEmail: email =>
     Parent.findOne({ where: { email } }),
+
   /**
     * @function findAccountByPhone
-    * @memberof parentServices
-    * @param {number} phone - The phone number of the parent
+    * @param {string} phone - The phone number of the parent
    */
   findAccountByPhone: phone =>
     Parent.findOne({ where: { phone } }),
-  
+
+  /**
+    * @function findAccountByUsername
+    * @param {string} username - The username of the parent
+  */
+  findAccountByUsername: username =>
+    Parent.findOne({ where: { username } }),
 
 };
 
