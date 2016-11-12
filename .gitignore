@@ -1,3 +1,4 @@
 node_modules/*
 .DS_Store
 server/src/docs/*
+server/src/config.js
