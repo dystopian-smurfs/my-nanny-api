@@ -65,6 +65,8 @@ const accountServices = {
     * @param {object} data.account - Contains a account's info
     * @param {string} data.account.amazonId
     * @param {object} data.child - The child
+    * @param {string} data.child.name
+    * @param {string} data.child.phone
     * @returns {promise}
   */
   addChild: data =>
@@ -93,11 +95,11 @@ const accountServices = {
     * @function updateChild
     * @param {object} data - Contains an account
     * @param {object} data.account - Contains amazonId
-    * @param {object} data.account.amazonId
+    * @param {string} data.account.amazonId
     * @param {object} data.child - MUST contains ORIGINAL child name
-    * @param {object} data.child.name - MUST be ORIGINAL child name
-    * @param {object} data.updatedChild.name - Contains child's updated name
-    * @param {object} data.updatedChild.phone - Contains child's updated name
+    * @param {string} data.child.name - MUST be ORIGINAL child name
+    * @param {string} data.updatedChild.name - Child's updated name
+    * @param {string} data.updatedChild.phone - Child's updated name
     * @returns {promise}
   */
   updateChild: data =>
@@ -128,7 +130,14 @@ const accountServices = {
         }
       });
   }),
-
+  /**
+    * @function updateAccount
+    * @param {object} data - Contains an account
+    * @param {object} data.account - Contains amazonId
+    * @param {string} data.account.amazonId
+    * @param {object} data.updatedAccount
+    * @returns {promise}
+  */
   updateAccount: data =>
     new Promise((resolve, reject) => {
       accountRepository.findAccountByAmazonId(data.account.amazonId)
