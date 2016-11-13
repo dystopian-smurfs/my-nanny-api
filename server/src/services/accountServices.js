@@ -101,7 +101,7 @@ const accountServices = {
     * @param {object} data.updatedChild.phone - Contains child's updated name
     * @returns {promise}
   */
-  editChild: data =>
+  updateChild: data =>
   new Promise((resolve, reject) => {
     parentServices.findAccountByAmazonId(data.parent.amazonId)
       .then((parent) => {
@@ -129,6 +129,8 @@ const accountServices = {
         }
       });
   }),
+
+  updateParent:
 
 };
 

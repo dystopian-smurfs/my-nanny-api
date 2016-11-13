@@ -24,7 +24,7 @@ const UserController = {
   },
 
   editChild: (req, res) => {
-    accountServices.editChild(req.body)
+    accountServices.updateChild(req.body)
     .then(status => res.send(status))
     .catch(err => res.send(err));
   },

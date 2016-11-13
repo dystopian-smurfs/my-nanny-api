@@ -12,7 +12,7 @@ const routes = (app) => {
 
   /* /////// CHILDREN /////// */
   app.post('/api/children', UserController.addChild);
-  app.put('/api/children', UserController.editChild);
+  app.put('/api/children', UserController.updateChild);
 
   /* /////// CHORES //////// */
   app.get('/api/chores', ChoresController.readAll);
