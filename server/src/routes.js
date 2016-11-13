@@ -26,7 +26,7 @@ const routes = (app) => {
   app.post('/login', UserController.login);
 
  /**
-  * @api {post} /logout Login
+  * @api {post} /logout Logout
   * @apiName UserLogout
   * @apiGroup Auth
   *
