@@ -1,13 +1,13 @@
 import db from './connection';
-import Parent from './models/parentModel';
+import Account from './models/accountModel';
 import Child from './models/childModel';
 import Chore from './models/choreModel';
 import Schedule from './models/scheduleModel';
 import Curfew from './models/curfewModel';
 
 const initializeModels = () => {
-  Child.belongsTo(Parent);
-  Parent.hasMany(Child);
+  Child.belongsTo(Account);
+  Account.hasMany(Child);
   Child.hasMany(Chore);
   Child.hasOne(Schedule);
   Schedule.hasMany(Curfew);

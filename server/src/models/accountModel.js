@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 import db from '../connection';
 
-const Parent = db.define('parent', {
+const Account = db.define('account', {
   token: Sequelize.STRING,
   username: Sequelize.STRING,
   amazonId: Sequelize.STRING,
@@ -10,4 +10,4 @@ const Parent = db.define('parent', {
   email: Sequelize.STRING,
 });
 
-export default Parent;
+export default Account;

@@ -1,4 +1,5 @@
 import Child from '../models/childModel';
+import Account from '../models/accountModel';
 /**
   * @module Repository: Child
 */
@@ -9,8 +10,8 @@ const childRepository = {
     * @param data.name - Child's first name
     * @param data.phone - Child's phone number
   */
-  create: function createChild(parent, { name, phone }) {
-    return Child.build(Object.assign({}, { parentId: parent.get('id') }, { name, phone }));
+  create: function createChild(account, { name, phone }) {
+    return Child.build(Object.assign({}, { accountId: account.get('id') }, { name, phone }));
   },
 
   /**
@@ -39,7 +40,52 @@ const childRepository = {
   */
   save: child => child.save(),
 
-};
+  /**
+    * @function findAccountByAmazonId
+    * @desc Finds all children of a account based on their name
+    * @param {object} child
+    * @param {string} child.name
+    * @param {string} amazonId - The amazonId of the account
+    * @returns {promise} promise - Resolves to array of children or []
+   */
+  findOneByAmazonId: ({ name }, amazonId) =>
+    new Promise((resolve) => {
+      Account.findOne({
+        where: {
+          amazonId,
+        },
+        include: [{
+          model: Child,
+          where: {
+            name,
+          },
+        }],
+      })
+      .then((foundAccount) => {
+        console.log('FOUND Account: ', foundAccount);
+        if (foundAccount) {
+          resolve(foundAccount.children);
+        } else {
+          resolve([]);
+        }
+      })
+      .catch(err => console.log(err));
+    }),
 
+  /**
+    * @function findAccountByEmail
+    * @param {string} email
+   */
+  findAccountByEmail: email =>
+    Child.findOne({ where: { email } }),
+
+  /**
+    * @function findAccountByPhone
+    * @param {string} phone
+   */
+  findAccountByPhone: phone =>
+    Child.findOne({ where: { phone } }),
+
+};
 
 export default childRepository;

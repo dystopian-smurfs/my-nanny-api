@@ -23,11 +23,12 @@ const UserController = {
     .catch(err => res.send(err));
   },
 
-  editChild: (req, res) => {
+  updateChild: (req, res) => {
     accountServices.updateChild(req.body)
     .then(status => res.send(status))
     .catch(err => res.send(err));
   },
+
 };
 
 export default UserController;
