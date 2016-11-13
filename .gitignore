@@ -1,6 +1,7 @@
 node_modules/*
 .DS_Store
-server/src/docs/*
+server/src/docs/apidocs*
+server/src/docs/jsdocs*
 server/src/config.js
 
 # Exception, this is so that the docs folder shows up in commits
