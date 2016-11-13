@@ -8,8 +8,14 @@ import Curfew from './models/curfewModel';
 const initializeModels = () => {
   Child.belongsTo(Account);
   Account.hasMany(Child);
+
+  Chore.belongsTo(Child);
   Child.hasMany(Chore);
+
+  Schedule.belongsTo(Child);
   Child.hasOne(Schedule);
+
+  Curfew.belongsTo(Schedule);
   Schedule.hasMany(Curfew);
 };
 
