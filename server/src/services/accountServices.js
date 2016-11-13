@@ -113,9 +113,17 @@ const accountServices = {
             if (!children.length) {
               reject('Child doesn\'t exist');
             } else {
-              children[0].updateAttributes(data.updatedChild)
-              .on('success', resolve('Child updated successfully.'))
-              .on('error', reject('Error updating child'));
+              // Check if another child is already called what you passed in as name
+              childServices.findOneByAmazonId(data.updatedChild, data.parent.amazonId)
+              .then((duplicateChildren) => {
+                if (duplicateChildren.length) {
+                  reject('Another child is already named what you tried to update this child');
+                } else {
+                  children[0].updateAttributes(data.updatedChild)
+                  .on('success', resolve('Child updated successfully.'))
+                  .on('error', reject('Error updating child'));
+                }
+              });
             }
           });
         }
