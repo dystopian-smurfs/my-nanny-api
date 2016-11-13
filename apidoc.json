@@ -1,0 +1,13 @@
+{
+
+  "name": "My-Nanny",
+  "version": "0.1.0",
+  "description": "Documentation for the My-Nanny API",
+  "title": "My-Nanny",
+  "header": {
+    "title": "Your child's personal nanny"
+  },
+  "footer": {
+    "title": "My own footer title"
+  }
+}

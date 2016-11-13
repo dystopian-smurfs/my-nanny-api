@@ -1,9 +1,6 @@
 import ChoresController from './controllers/ChoresController';
 import UserController from './controllers/UserController';
-/** * @namespace API: Auth */
-/** * @namespace API: Account */
-/** * @namespace API: Children */
-/** * @namespace API: Chores */
+
 const routes = (app) => {
   /* /////// DOCS //////// */
   app.get('/', (req, res) => res.render('index', { title: 'my-nanny docs' }));
@@ -11,80 +8,129 @@ const routes = (app) => {
   /* /////// AUTH //////// */
 
   /**
-    * @event /login
-    * @memberOf API: Auth
-    * @desc POST
-    * @prop {object} data - Contains "account" obj
-    * @prop {object} data.account
-    * @prop {string} data.account.amazonId
-  */
+   * @api {post} /login Login
+   * @apiName UserLogin
+   * @apiGroup Auth
+   *
+   * @apiParamExample POST format:
+   *     {
+   *       "account": {
+   *         "amazonId": "999888777666"
+   *       },
+   *     }
+   *
+   * @apiSuccess {String} Successfully logged in.
+   *
+   * @apiError Failed to log in.
+   */
   app.post('/login', UserController.login);
 
-  /**
-    * @event /logout
-    * @memberOf API: Auth
-    * @desc POST
+ /**
+  * @api {post} /logout Login
+  * @apiName UserLogout
+  * @apiGroup Auth
+  *
+  *
+  * @apiSuccess {String} Successfully logged out.
+  *
+  * @apiError Failed to log out.
   */
   app.post('/logout', UserController.logout);
 
   /**
-    * @event /signup
-    * @memberOf API: Auth
-    * @desc POST
-    * @prop {object} data - An object with new account info
-    * @prop {string} data.account.username
-    * @prop {string} data.account.token - The token given my Amazon's OAuth
-    * @prop {string} data.account.amazonId - The account's Amazon Id
-    * @prop {string} data.account.timeZone - See momentjs for formats
-    * @prop {object} data.account.phone - Ex: "111222333"
-    * @prop {object} data.account.email - Ex: "nanny@example.com"
-  */
+   * @api {post} /signup Signup
+   * @apiName UserSignup
+   * @apiGroup Auth
+   *
+   * @apiParamExample POST format:
+   *     {
+   *       "account": {
+   *         "token": "1234",
+   *         "username": "Mary",
+   *         "amazonId": "999888777666",
+   *         "timeZone": "EST",
+   *         "phone": "1234567890",
+   *         "email": "mary@example.com"
+   *       },
+   *     }
+   *
+   * @apiSuccess {String} Account successfully created.
+   *
+   * @apiError Failed to create account.
+   */
   app.post('/signup', UserController.signup);
 
   /* /////// ACCOUNT /////// */
   /**
-    * @event /api/account
-    * @memberOf API: Account
-    * @desc PUT
-    * @param {object} data - Contains an account
-    * @param {object} data.account - Contains amazonId
-    * @param {string} data.account.amazonId
-    * @param {object} data.updatedAccount
-    * @param {string} data.updatedAccount.username
-    * @param {string} data.updatedAccount.token - The token given my Amazon's OAuth
-    * @param {string} data.updatedAccount.amazonId - The updatedAccount's Amazon Id
-    * @param {string} data.updatedAccount.timeZone
-    * @param {object} data.updatedAccount.phone
-    * @param {object} data.updatedAccount.email
-  */
+   * @api {PUT} /api/account Update Account
+   * @apiName UserUpdate
+   * @apiGroup Account
+   *
+   * @apiParamExample PUT format:
+   *     {
+   *       "account": {
+   *         "amazonId": "999888777666"
+   *       },
+   *       "updatedAccount": {
+   *         "username": "Mary",
+   *         "timeZone": "EST",
+   *         "phone": "9990009999",
+   *         "email": "mary@anotherExample.com"
+   *       },
+   *     }
+   *
+   * @apiSuccess {String} Successfully updated account.
+   *
+   * @apiError Failed to update account.
+   */
   app.put('/api/account', UserController.updateAccount);
 
   /* /////// CHILDREN /////// */
   /**
-    * @event /api/children
-    * @memberOf API: Children
-    * @desc POST
-    * @param {object} data - Contains separate account and child objects
-    * @param {object} data.account - Contains a account's info
-    * @param {string} data.account.amazonId
-    * @param {object} data.child - The child
-    * @param {string} data.child.name
-    * @param {string} data.child.phone
-  */
+   * @api {post} /api/children Add Child to Account
+   * @apiName UserChildren
+   * @apiGroup Children
+   *
+   * @apiParamExample POST format:
+   *     {
+   *       "account": {
+   *         "amazonId": "999888777666"
+   *       },
+   *       "child": {
+   *         "name": "Winston",
+   *         "phone": "8887776666"
+   *       },
+   *     }
+   *
+   * @apiSuccess {String} Successfully added child.
+   *
+   * @apiError Failed to add child.
+   */
   app.post('/api/children', UserController.addChild);
 
   /**
-    * @event /api/children
-    * @memberOf API: Children
-    * @desc PUT
-    * @param {object} data - Contains an account
-    * @param {object} data.account - Contains amazonId
-    * @param {string} data.account.amazonId
-    * @param {object} data.child - MUST contains ORIGINAL child name
-    * @param {string} data.child.name - MUST be ORIGINAL child name
-    * @param {string} data.updatedChild.name - Child's updated name
-    * @param {string} data.updatedChild.phone - Child's updated name
-  */
+   * @api {PUT} /api/children Update a child
+   * @apiName UserChildren
+   * @apiGroup Children
+   *
+   * @apiParamExample PUT format:
+   *     {
+   *       "account": {
+   *         "amazonId": "999888777666"
+   *       },
+   *       "child": {
+   *         "name": "Winston",
+   *       },
+   *       "updatedChild": {
+   *         "name": "Oliver",
+   *         "phone": "2223334444"
+   *       },
+   *     }
+   *
+   * @apiSuccess {String} Successfully updated child.
+   *
+   * @apiError Failed to update child.
+   */
   app.put('/api/children', UserController.updateChild);
 
   /* /////// CHORES //////// */
