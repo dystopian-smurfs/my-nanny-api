@@ -17,6 +17,12 @@ const UserController = {
     .catch(err => res.send(err));
   },
 
+  updateAccount: (req, res) => {
+    accountServices.updateAccount(req.body)
+    .then(status => res.send(status))
+    .catch(err => res.send(err));
+  },
+
   addChild: (req, res) => {
     accountServices.addChild(req.body)
     .then(status => res.send(status))

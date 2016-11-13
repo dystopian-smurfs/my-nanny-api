@@ -104,14 +104,13 @@ const accountServices = {
   new Promise((resolve, reject) => {
     accountRepository.findAccountByAmazonId(data.account.amazonId)
       .then((account) => {
-        console.log('update child', account)
         if (!account) {
           reject('Cannot edit child, account does not exist.');
         } else {
           childRepository.findOneByAmazonId(data.child, data.account.amazonId)
           .then((children) => {
             if (!children.length) {
-              reject('Child doesn\'t exist');
+              reject('Child doesn\'t exist.');
             } else {
               // Check if another child is already called what you passed in as name
               childRepository.findOneByAmazonId(data.updatedChild, data.account.amazonId)
@@ -121,7 +120,7 @@ const accountServices = {
                 } else {
                   children[0].updateAttributes(data.updatedChild)
                   .on('success', resolve('Child updated successfully.'))
-                  .on('error', reject('Error updating child'));
+                  .on('error', reject('Error updating child.'));
                 }
               });
             }
@@ -130,7 +129,18 @@ const accountServices = {
       });
   }),
 
-  updateAccount: data => {},
+  updateAccount: data =>
+    new Promise((resolve, reject) => {
+      accountRepository.findAccountByAmazonId(data.account.amazonId)
+      .then((account) => {
+        if (!account) {
+          reject('Cannot update account. Account doesn\'t exist');
+        } else {
+          account.updateAttributes(data.updatedAccount);
+          resolve('Account updated successfully.');
+        }
+      });
+    }),
 
 };
 

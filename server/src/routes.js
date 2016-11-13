@@ -10,6 +10,9 @@ const routes = (app) => {
   app.post('/logout', UserController.logout);
   app.post('/signup', UserController.signup);
 
+  /* /////// ACCOUNT /////// */
+  app.put('/api/account', UserController.updateAccount);
+
   /* /////// CHILDREN /////// */
   app.post('/api/children', UserController.addChild);
   app.put('/api/children', UserController.updateChild);
