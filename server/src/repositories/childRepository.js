@@ -32,6 +32,11 @@ const childRepository = {
   */
   destroy: child => child.destroy(),
 
+  /**
+    * @function save
+    * @description - Useless, it is easier to just call .save() on a model instance
+    * @param {object} child - The child instance you built
+  */
   save: child => child.save(),
 
 };

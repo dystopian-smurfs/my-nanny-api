@@ -1,3 +1,4 @@
+import Promise from 'bluebird';
 import Parent from '../models/parentModel';
 import Child from '../models/childModel';
 import Chore from '../models/choreModel';
@@ -17,28 +18,31 @@ const childServices = {
     * @param {object} child
     * @param {string} child.name
     * @param {string} amazonId - The amazonId of the parent
-    * @param {callback} cb - The callback to be done after the promise resolves
+    * @returns {promise} promise - Resolves to array of children or []
    */
-  findAllByAmazonId: ({ name }, amazonId, cb) => {
-    Parent.findOne({
-      where: {
-        amazonId,
-      },
-      include: [{
-        model: Child,
+  findOneByAmazonId: ({ name }, amazonId) =>
+    new Promise((resolve) => {
+      Parent.findOne({
         where: {
-          name,
+          amazonId,
         },
-      }],
-    })
-    .then((foundParent) => {
-      if (foundParent) {
-        cb(foundParent.children);
-      } else {
-        cb([]);
-      }
-    });
-  },
+        include: [{
+          model: Child,
+          where: {
+            name,
+          },
+        }],
+      })
+      .then((foundParent) => {
+        console.log('FOUND Parent: ', foundParent);
+        if (foundParent) {
+          resolve(foundParent.children);
+        } else {
+          resolve([]);
+        }
+      })
+      .catch(err => console.log(err));
+    }),
 
   /**
     * @function findAccountByEmail

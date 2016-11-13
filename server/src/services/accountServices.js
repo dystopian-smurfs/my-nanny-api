@@ -1,3 +1,4 @@
+import Promise from 'bluebird';
 import Parent from '../models/parentModel';
 import Child from '../models/childModel';
 import Chore from '../models/choreModel';
@@ -23,64 +24,103 @@ const accountServices = {
     * @param {string} data.parent.timeZone
     * @param {object} data.parent.phone
     * @param {object} data.parent.email
+    * @returns {promise}
    */
-  createNewAccount: (data, cb) => {
-    parentServices.findAccountByAmazonId(data.parent.amazonId)
-    .then((parent) => {
-      if (parent) {
-        // If parent exists already, return an error
-        cb('Failed to create account.');
-      } else {
-        const newParent = parentRepository.create(data.parent);
-        newParent.save();
-        cb('Successfully created account.');
-      }
-    });
-  },
+  createNewAccount: data =>
+    new Promise((resolve, reject) => {
+      parentServices.findAccountByAmazonId(data.parent.amazonId)
+      .then((parent) => {
+        if (parent) {
+          // If parent exists already, return an error
+          reject('Failed to create account.');
+        } else {
+          const newParent = parentRepository.create(data.parent);
+          newParent.save();
+          resolve('Successfully created account.');
+        }
+      });
+    }),
 
   /**
     * @function login
     * @param {object} data - Contains a parent/user login
     * @param {string} data.parent.amazonId
+    * @returns {promise}
   */
-  login: (data, cb) => {
-    parentServices.findAccountByAmazonId(data.parent.amazonId)
-    .then((parent) => {
-      if (!parent) {
-        // If parent does not exist, login
-        cb('Failed to log in.');
-      } else {
-        cb('Successfully logged in.');
-      }
-    });
-  },
+  login: data =>
+    new Promise((resolve, reject) => {
+      parentServices.findAccountByAmazonId(data.parent.amazonId)
+      .then((parent) => {
+        if (!parent) {
+          // If parent does not exist, login
+          reject('Failed to log in.');
+        } else {
+          resolve('Successfully logged in.');
+        }
+      });
+    }),
 
   /**
     * @function addChild
-    * @param {object} data - Contains a parent's amazonId
-    * @param {string} data.amazonId
+    * @param {object} data - Contains separate parent and child objects
+    * @param {object} data.parent - Contains a parent's info
+    * @param {string} data.parent.amazonId
+    * @param {object} data.child - The child
+    * @returns {promise}
   */
-  addChild: (data, cb) => {
-    parentServices.findAccountByAmazonId(data.parent.amazonId)
-    .then((parent) => {
-      if (!parent) {
-        cb('Cannot add child, parent does not exist.');
-      } else {
-        childServices.findAllByAmazonId(data.child, data.parent.amazonId, (children) => {
-          console.log('CHILDREN: ', children);
-          if (children.length) {
-            cb('Child already exists');
-          } else {
-            const newChild = childRepository.create(parent, data.child);
-            newChild.save();
-            parent.addChild(newChild);
-            cb('Child successfully added.');
-          }
-        });
-      }
-    });
-  },
+  addChild: data =>
+    new Promise((resolve, reject) => {
+      parentServices.findAccountByAmazonId(data.parent.amazonId)
+      .then((parent) => {
+        if (!parent) {
+          reject('Cannot add child, parent does not exist.');
+        } else {
+          childServices.findOneByAmazonId(data.child, data.parent.amazonId)
+          .then((children) => {
+            if (children.length) {
+              reject('Child already exists');
+            } else {
+              const newChild = childRepository.create(parent, data.child);
+              newChild.save();
+              parent.addChild(newChild);
+              resolve('Child successfully added.');
+            }
+          });
+        }
+      });
+    }),
 
+  /**
+    * @function editChild
+    * @param {object} data - Contains a parent
+    * @param {object} data.parent - Contains amazonId
+    * @param {object} data.parent.amazonId
+    * @param {object} data.child - MUST contains ORIGINAL child name
+    * @param {object} data.child.name - MUST contain ORIGINAL name
+    * @param {object} data.updatedChild.name - Contains child's updated name
+    * @param {object} data.updatedChild.phone - Contains child's updated name
+    * @returns {promise}
+  */
+  editChild: data =>
+  new Promise((resolve, reject) => {
+    parentServices.findAccountByAmazonId(data.parent.amazonId)
+      .then((parent) => {
+        if (!parent) {
+          reject('Cannot edit child, parent does not exist.');
+        } else {
+          childServices.findOneByAmazonId(data.child, data.parent.amazonId)
+          .then((children) => {
+            if (!children.length) {
+              reject('Child doesn\'t exist');
+            } else {
+              children[0].updateAttributes(data.updatedChild)
+              .on('success', resolve('Child updated successfully.'))
+              .on('error', reject('Error updating child'));
+            }
+          });
+        }
+      });
+  }),
 
 };
 

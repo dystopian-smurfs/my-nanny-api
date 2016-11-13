@@ -2,7 +2,9 @@ import accountServices from '../services/accountServices';
 
 const UserController = {
   login: (req, res) => {
-    accountServices.login(req.body, status => res.send(status));
+    accountServices.login(req.body)
+    .then(status => res.send(status))
+    .catch(err => res.send(err));
   },
 
   logout: (req, res) => {
@@ -10,11 +12,21 @@ const UserController = {
   },
 
   signup: (req, res) => {
-    accountServices.createNewAccount(req.body, status => res.send(status));
+    accountServices.createNewAccount(req.body)
+    .then(status => res.send(status))
+    .catch(err => res.send(err));
   },
 
   addChild: (req, res) => {
-    accountServices.addChild(req.body, status => res.send(status));
+    accountServices.addChild(req.body)
+    .then(status => res.send(status))
+    .catch(err => res.send(err));
+  },
+
+  editChild: (req, res) => {
+    accountServices.editChild(req.body)
+    .then(status => res.send(status))
+    .catch(err => res.send(err));
   },
 };
 

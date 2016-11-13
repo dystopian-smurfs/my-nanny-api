@@ -11,7 +11,8 @@ const routes = (app) => {
   app.post('/signup', UserController.signup);
 
   /* /////// CHILDREN /////// */
-  app.post('/addChild', UserController.addChild);
+  app.post('/api/children', UserController.addChild);
+  app.put('/api/children', UserController.editChild);
 
   /* /////// CHORES //////// */
   app.get('/api/chores', ChoresController.readAll);
