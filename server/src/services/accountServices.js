@@ -102,8 +102,9 @@ const accountServices = {
   */
   updateChild: data =>
   new Promise((resolve, reject) => {
-    accountServices.findAccountByAmazonId(data.account.amazonId)
+    accountRepository.findAccountByAmazonId(data.account.amazonId)
       .then((account) => {
+        console.log('update child', account)
         if (!account) {
           reject('Cannot edit child, account does not exist.');
         } else {
