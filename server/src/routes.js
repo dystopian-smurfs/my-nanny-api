@@ -19,7 +19,59 @@ const routes = (app) => {
   *       }
   *     }
   *
-  * @apiSuccess {String} Successfully logged in.
+  * @apiSuccessExample Success-Response:
+  *
+  *     {
+  *       "account": {
+  *         "amazonId": "999888777666"
+  *       },
+  *       "children": [
+  *         {
+  *           "name": "Winston",
+  *           "chores": [
+  *             {
+  *               "title": "Clean your room",
+  *               "details": "Please clean your room nice and neat. Vaccuum it too!",
+  *               "date": "2016-12-24",
+  *               "completed": false
+  *             },
+  *             {
+  *               "title": "Wash the dishes",
+  *               "details": "Use the blue sponge under the sink.",
+  *               "date": "2016-12-24",
+  *               "completed": true
+  *             }
+  *           ],
+  *           "checkedIn": false,
+  *           "schedule": {
+  *             "default": [null, "18:30", "14:30", "17:00", "22:00", "17:00", null],
+  *             "dateOfLastCurfew": "2016-11-14"
+  *           }
+  *         },
+  *         {
+  *           "name": "Wendy",
+  *           "chores": [
+  *             {
+  *               "title": "Clean your room",
+  *               "details": "Please clean your room nice and neat. Vaccuum it too!",
+  *               "date": "2016-12-24"
+  *               "completed": true
+  *             },
+  *             {
+  *               "title": "Wash the dishes",
+  *               "details": "Use the blue sponge under the sink.",
+  *               "date": "2016-12-24",
+  *               "completed": false
+  *             }
+  *           ],
+  *           "checkedIn": true,
+  *           "schedule": {
+  *             "default": [null, "18:30", "14:30", "17:00", "22:00", "17:00", null],
+  *             "dateOfLastCurfew": "2016-11-13"
+  *           }
+  *         }
+  *       ]
+  *     }
   *
   * @apiError Failed to log in.
   */
@@ -135,14 +187,6 @@ const routes = (app) => {
   /**
   * @api {get} /api/chores Get all chores for a child
   * @apiGroup Chores
-  *     {
-  *       "account": {
-  *         "amazonId": "999888777666"
-  *       },
-  *       "child": {
-  *         "name": "Alfred"
-  *       }
-  *     }
   *
   */
   app.get('/api/chores', ChoresController.readAll);
@@ -150,10 +194,6 @@ const routes = (app) => {
   /**
   * @api {get} /api/chores/:id Get a specific chore?
   * @apiGroup Chores
-  * @apiParamExample GET format:
-  *     {
-  *       "NOT SURE IF WE NEED THIS PATH": "LET ME KNOW"
-  *     }
   *
   */
   app.get('/api/chores/:id', ChoresController.read);
