@@ -132,6 +132,31 @@ const routes = (app) => {
   /* /////// CHORES //////// */
   app.get('/api/chores', ChoresController.readAll);
   app.get('/api/chores/:id', ChoresController.read);
+
+  /**
+  * @api {post} /api/chores Add Chore to a Child
+  * @apiGroup Chores
+  *
+  * @apiParamExample POST format:
+  *     {
+  *       "account": {
+  *         "amazonId": "999888777666"
+  *       },
+  *       "child": {
+  *         "name": "Winston"
+  *       },
+  *       "chores": "[
+  *         { "title": "Clean your room",
+  *           "description": "Please clean your room nice and neat. Vaccuum it too!",
+  *           "utc": ""
+  *         },
+  *         { "title":"jump"}]"
+  *     }
+  *
+  * @apiSuccess {String} Successfully added child.
+  *
+  * @apiError Failed to add child.
+  */
   app.post('/api/chores', ChoresController.create);
   app.put('/api/chores', ChoresController.update);
   app.delete('/api/chores/:id', ChoresController.destroy);

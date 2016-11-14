@@ -34,7 +34,8 @@ const accountServices = {
         } else {
           const newAccount = accountRepository.create(data.account);
           newAccount.save();
-          resolve('Successfully created account.');
+          const { username, token, timeZone } = newAccount;
+          resolve(JSON.stringify({ username, token }));
         }
       });
     }),
@@ -44,7 +45,7 @@ const accountServices = {
     * @param {object} data - Contains an account
     * @param {object} data.account
     * @param {string} data.account.amazonId
-    * @returns {promise}
+    * @returns {promise} - Resolves to the user's account info
   */
   login: data =>
     new Promise((resolve, reject) => {
@@ -54,7 +55,8 @@ const accountServices = {
           // If account does not exist, login
           reject('Failed to log in.');
         } else {
-          resolve('Successfully logged in.');
+          const { username, token, timeZone } = account;
+          resolve(JSON.stringify({ username, token }));
         }
       });
     }),
