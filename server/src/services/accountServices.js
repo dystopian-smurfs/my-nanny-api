@@ -34,7 +34,7 @@ const accountServices = {
         } else {
           const newAccount = accountRepository.create(data.account);
           newAccount.save();
-          const { username, token, timeZone } = newAccount;
+          const { username, token } = newAccount;
           resolve(JSON.stringify({ username, token }));
         }
       });
@@ -55,7 +55,7 @@ const accountServices = {
           // If account does not exist, login
           reject('Failed to log in.');
         } else {
-          const { username, token, timeZone } = account;
+          const { username, token } = account;
           resolve(JSON.stringify({ username, token }));
         }
       });
