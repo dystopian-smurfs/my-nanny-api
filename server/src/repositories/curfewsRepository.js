@@ -3,7 +3,7 @@ import Curfew from '../models/curfewModel';
 /**
   * @module Repository: Curfew
 */
-const curfewRepository = {
+const curfewsRepository = {
   /**
     * @function create
     * @param {object} data
@@ -34,4 +34,4 @@ const curfewRepository = {
 
 };
 
-export default curfewRepository;
+export default curfewsRepository;

@@ -3,9 +3,9 @@ import db from '../connection';
 
 const Chore = db.define('chore', {
   title: Sequelize.STRING,
-  description: Sequelize.STRING,
-  utc: Sequelize.INTEGER,
-  status: Sequelize.BOOLEAN,
+  details: Sequelize.STRING,
+  date: Sequelize.STRING,
+  completed: Sequelize.BOOLEAN,
 });
 
 export default Chore;

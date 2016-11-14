@@ -3,7 +3,7 @@ import Account from '../models/accountModel';
 /**
   * @module Repository: Child
 */
-const childRepository = {
+const childrenRepository = {
   /**
     * @function create
     * @param {object} data
@@ -62,11 +62,10 @@ const childRepository = {
         }],
       })
       .then((foundAccount) => {
-        console.log('FOUND Account: ', foundAccount);
         if (foundAccount) {
-          resolve(foundAccount.children);
+          resolve(foundAccount.children[0]);
         } else {
-          resolve([]);
+          resolve(null);
         }
       })
       .catch(err => console.log(err));
@@ -88,4 +87,4 @@ const childRepository = {
 
 };
 
-export default childRepository;
+export default childrenRepository;

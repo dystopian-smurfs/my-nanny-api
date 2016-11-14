@@ -1,5 +1,6 @@
 import ChoresController from './controllers/ChoresController';
 import UserController from './controllers/UserController';
+import ChildrenController from './controllers/ChildrenController';
 
 const routes = (app) => {
   /* /////// DOCS //////// */
@@ -103,7 +104,7 @@ const routes = (app) => {
   *
   * @apiError Failed to add child.
   */
-  app.post('/api/children', UserController.addChild);
+  app.post('/api/children', ChildrenController.addChild);
 
   /**
   * @api {put} /api/children Update a child
@@ -127,14 +128,29 @@ const routes = (app) => {
   *
   * @apiError Failed to update child.
   */
-  app.put('/api/children', UserController.updateChild);
+  app.put('/api/children', ChildrenController.updateChild);
 
   /* /////// CHORES //////// */
+
+  /**
+  * @api {get} /api/chores Get all chores for a child
+  * @apiGroup Chores
+  */
   app.get('/api/chores', ChoresController.readAll);
+
+  /**
+  * @api {get} /api/chores/:id Get a specific chore?
+  * @apiGroup Chores
+  * @apiParamExample GET format:
+  *     {
+  *       "NOT SURE IF WE NEED THIS PATH": "LET ME KNOW"
+  *     }
+  *
+  */
   app.get('/api/chores/:id', ChoresController.read);
 
   /**
-  * @api {post} /api/chores Add Chore to a Child
+  * @api {post} /api/chores Add Chores to a Child
   * @apiGroup Chores
   *
   * @apiParamExample POST format:
@@ -147,18 +163,32 @@ const routes = (app) => {
   *       },
   *       "chores": "[
   *         { "title": "Clean your room",
-  *           "description": "Please clean your room nice and neat. Vaccuum it too!",
-  *           "utc": ""
+  *           "details": "Please clean your room nice and neat. Vaccuum it too!",
+  *           "date": "2016-12-24"
   *         },
-  *         { "title":"jump"}]"
+  *         { "title": "Wash the dishes",
+  *           "details": "Use the blue sponge under the sink.",
+  *           "date": "2016-12-24"
+  *         },
+  *        ]"
   *     }
   *
-  * @apiSuccess {String} Successfully added child.
+  * @apiSuccess {String} Successfully added chore.
   *
-  * @apiError Failed to add child.
+  * @apiError Failed to add chore.
   */
   app.post('/api/chores', ChoresController.create);
+
+  /**
+  * @api {post} /api/chores Add Chore to a Child
+  * @apiGroup Chores
+  */
   app.put('/api/chores', ChoresController.update);
+
+  /**
+  * @api {post} /api/chores Add Chore to a Child
+  * @apiGroup Chores
+  */
   app.delete('/api/chores/:id', ChoresController.destroy);
 };
 

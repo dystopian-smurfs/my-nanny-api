@@ -3,18 +3,20 @@ import Chore from '../models/choreModel';
 /**
   * @module Repository: Chore
 */
-const choreRepository = {
+const choresRepository = {
   /**
     * @function create
     * @param {object} data
     * @param data.title - The chore's title, what my-nanny will have alexa say
+    * @param data.description - Extra details for the child
+    * @param data.date - "2016-14-3"
   */
-  create: function createChore({ title, description, utc, status }) {
+  create: function createChore({ title, details, date }) {
     return Chore.build({
       title,
-      description,
-      utc,
-      status,
+      details,
+      date,
+      completed: 'false',
     });
   },
   /**
@@ -37,4 +39,4 @@ const choreRepository = {
 
 };
 
-export default choreRepository;
+export default choresRepository;

@@ -3,7 +3,7 @@ import db from '../connection';
 
 const Child = db.define('child', {
   name: Sequelize.STRING,
-  phone: Sequelize.INTEGER,
+  phone: Sequelize.STRING,
 });
 
 export default Child;
