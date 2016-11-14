@@ -16,7 +16,7 @@ const routes = (app) => {
   *     {
   *       "account": {
   *         "amazonId": "999888777666"
-  *       },
+  *       }
   *     }
   *
   * @apiSuccess {String} Successfully logged in.
@@ -49,7 +49,7 @@ const routes = (app) => {
   *         "timeZone": "EST",
   *         "phone": "1234567890",
   *         "email": "mary@example.com"
-  *       },
+  *       }
   *     }
   *
   * @apiSuccess {String} Account successfully created.
@@ -74,7 +74,7 @@ const routes = (app) => {
   *         "timeZone": "EST",
   *         "phone": "9990009999",
   *         "email": "mary@anotherExample.com"
-  *       },
+  *       }
   *     }
   *
   * @apiSuccess {String} Successfully updated account.
@@ -135,6 +135,15 @@ const routes = (app) => {
   /**
   * @api {get} /api/chores Get all chores for a child
   * @apiGroup Chores
+  *     {
+  *       "account": {
+  *         "amazonId": "999888777666"
+  *       },
+  *       "child": {
+  *         "name": "Alfred"
+  *       }
+  *     }
+  *
   */
   app.get('/api/chores', ChoresController.readAll);
 
@@ -161,7 +170,7 @@ const routes = (app) => {
   *       "child": {
   *         "name": "Winston"
   *       },
-  *       "chores": "[
+  *       "chores": [
   *         { "title": "Clean your room",
   *           "details": "Please clean your room nice and neat. Vaccuum it too!",
   *           "date": "2016-12-24"
@@ -169,8 +178,8 @@ const routes = (app) => {
   *         { "title": "Wash the dishes",
   *           "details": "Use the blue sponge under the sink.",
   *           "date": "2016-12-24"
-  *         },
-  *        ]"
+  *         }
+  *        ]
   *     }
   *
   * @apiSuccess {String} Successfully added chore.
