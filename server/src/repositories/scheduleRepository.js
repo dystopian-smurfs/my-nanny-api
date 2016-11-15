@@ -50,7 +50,7 @@ const scheduleRepository = {
         if (foundAccount && foundAccount.hasOwnProperty('children') && foundAccount.children[0].hasOwnProperty('schedule')) {
           // TODO: change .schedule[0] to the actual structure of returned object
           // resolve(foundAccount.children[0].schedule[0]);
-          console.log('SCHEDULE WILL APPEAR HERE: ', foundAccount.children[0].schedule);
+          // console.log('SCHEDULE WILL APPEAR HERE: ', foundAccount.children[0].schedule);
           resolve(foundAccount.children[0].schedule);
         } else if (foundAccount && foundAccount.hasOwnProperty('children')) {
           resolve(null);
