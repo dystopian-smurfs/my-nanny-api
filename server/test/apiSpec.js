@@ -268,5 +268,170 @@ describe('My-Nanny API', () => {
     });
   });
 
+  it('Should add a schedule to a child based on amazonId and child name', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'POST',
+      uri: 'http://127.0.0.1:1337/api/schedule',
+      json: {
+        account: {
+          amazonId: '9999',
+        },
+        child: {
+          name: 'Little-John',
+        },
+        schedule: {
+          defaultCurfews: [
+            null,
+            '18:30',
+            '14:30',
+            '17:00',
+            '22:00',
+            '17:00',
+            null,
+          ],
+        },
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // that Little-John has a schedule with childId that matched his id
+      const queryString = 'SELECT * FROM schedules LEFT JOIN children ON schedules.childId = children.id LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = 9999';
+      // const queryString = 'SELECT * FROM chores';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        // console.log('QUERY RESULTS', results);
+        expect(results.length).to.equal(1);
+        expect(results[0].childId).to.equal(1);
+
+        done();
+      });
+    });
+  });
+
+  it('Should not add a schedule entry if the account does not exist', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'POST',
+      uri: 'http://127.0.0.1:1337/api/schedule',
+      json: {
+        account: {
+          amazonId: '0987',
+        },
+        child: {
+          name: 'Little-John',
+        },
+        schedule: {
+          defaultCurfews: [
+            null,
+            '18:30',
+            '14:30',
+            '17:00',
+            '22:00',
+            '17:00',
+            null,
+          ],
+        },
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // that Little-John has a schedule with childId that matched his id
+      const queryString = 'SELECT * FROM schedules';
+      // const queryString = 'SELECT * FROM chores';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        // console.log('QUERY RESULTS', results);
+        expect(results.length).to.equal(1);
+
+        done();
+      });
+    });
+  });
+
+  it('Should not add a schedule entry to a child if the child already has a schedule associated with it', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'POST',
+      uri: 'http://127.0.0.1:1337/api/schedule',
+      json: {
+        account: {
+          amazonId: '9999',
+        },
+        child: {
+          name: 'Little-John',
+        },
+        schedule: {
+          defaultCurfews: [
+            null,
+            '18:30',
+            '14:30',
+            '17:00',
+            '22:00',
+            '17:00',
+            null,
+          ],
+        },
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // that Little-John has a schedule with childId that matched his id
+      const queryString = 'SELECT * FROM schedules LEFT JOIN children ON schedules.childId = children.id LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = 9999';
+      // const queryString = 'SELECT * FROM chores';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        // console.log('QUERY RESULTS', results);
+        expect(results.length).to.equal(1);
+
+        done();
+      });
+    });
+  });
+
+
+  it('Should not add a schedule entry if the account exists but the child doesnt', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'POST',
+      uri: 'http://127.0.0.1:1337/api/schedule',
+      json: {
+        account: {
+          amazonId: '9999',
+        },
+        child: {
+          name: 'Fake-John',
+        },
+        schedule: {
+          defaultCurfews: [
+            null,
+            '18:30',
+            '14:30',
+            '17:00',
+            '22:00',
+            '17:00',
+            null,
+          ],
+        },
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // that Little-John has a schedule with childId that matched his id
+      const queryString = 'SELECT * FROM schedules ';
+      // const queryString = 'SELECT * FROM chores';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        // console.log('QUERY RESULTS', results);
+        expect(results.length).to.equal(1);
+
+        done();
+      });
+    });
+  });
 
 });

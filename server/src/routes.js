@@ -1,12 +1,13 @@
 import ChoresController from './controllers/ChoresController';
 import UserController from './controllers/UserController';
 import ChildrenController from './controllers/ChildrenController';
+import ScheduleController from './controllers/ScheduleController';
 
 const routes = (app) => {
-  /* /////// DOCS //////// */
+  /* /////// DOCS /////// */
   app.get('/', (req, res) => res.render('index', { title: 'my-nanny docs' }));
 
-  /* /////// AUTH //////// */
+  /* /////// AUTH /////// */
 
   /**
   * @api {post} /login Login
@@ -44,7 +45,7 @@ const routes = (app) => {
   *           ],
   *           "checkedIn": false,
   *           "schedule": {
-  *             "default": [null, "18:30", "14:30", "17:00", "22:00", "17:00", null],
+  *             "defaultCurfews": [null, "18:30", "14:30", "17:00", "22:00", "17:00", null],
   *             "dateOfLastCurfew": "2016-11-14"
   *           }
   *         },
@@ -66,7 +67,7 @@ const routes = (app) => {
   *           ],
   *           "checkedIn": true,
   *           "schedule": {
-  *             "default": [null, "18:30", "14:30", "17:00", "22:00", "17:00", null],
+  *             "defaultCurfews": [null, "18:30", "14:30", "17:00", "22:00", "17:00", null],
   *             "dateOfLastCurfew": "2016-11-13"
   *           }
   *         }
@@ -182,7 +183,7 @@ const routes = (app) => {
   */
   app.put('/api/children', ChildrenController.updateChild);
 
-  /* /////// CHORES //////// */
+  /* /////// CHORES /////// */
 
   /**
   * @api {get} /api/chores Get all chores for a child
@@ -239,6 +240,50 @@ const routes = (app) => {
   * @apiGroup Chores
   */
   app.delete('/api/chores/:id', ChoresController.destroy);
+
+
+  /* /////// Schedule /////// */
+
+  /**
+  * @api {get} /api/schedule Get schedule for a child
+  * @apiGroup Schedule
+  */
+  app.get('/api/schedule', ScheduleController.read);
+
+  /**
+  * @api {post} /api/schedule Create schedule for a child
+  * @apiGroup Schedule
+  *
+  * @apiParamExample POST format:
+  *     {
+  *       "account": {
+  *         "amazonId": "999888777666"
+  *       },
+  *       "child": {
+  *         "name": "Winston"
+  *       },
+  *       "schedule": {
+  *             "defaultCurfews": [null, "18:30", "14:30", "17:00", "22:00", "17:00", null]
+  *       }
+  *     }
+  *
+  * @apiSuccess {String} Successfully added chore.
+  *
+  * @apiError Failed to add chore.
+  */
+  app.post('/api/schedule', ScheduleController.create);
+
+  /**
+  * @api {put} /api/schedule Update schedule for a child
+  * @apiGroup Schedule
+  */
+  app.put('/api/schedule', ScheduleController.update);
+
+  /**
+  * @api {delete} /api/schedule Delete schedule for a child
+  * @apiGroup Schedule
+  */
+  app.delete('/api/schedule', ScheduleController.destroy);
 };
 
 export default routes;
