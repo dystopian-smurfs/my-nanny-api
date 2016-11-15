@@ -4,7 +4,7 @@ const ChoresController = {
   create: (req, res) => {
     choresServices.addChore(req.body)
     .then(status => res.send(status))
-    .catch(err => res.send(err));
+    .catch(err => res.status(500).send(err));
   },
 
   read: (req, res) => {

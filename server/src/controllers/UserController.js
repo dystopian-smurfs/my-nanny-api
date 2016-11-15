@@ -4,7 +4,7 @@ const UserController = {
   login: (req, res) => {
     accountServices.login(req.body)
     .then(status => res.send(status))
-    .catch(err => res.send(err));
+    .catch(err => res.status(500).send(err));
   },
 
   logout: (req, res) => {
@@ -14,13 +14,13 @@ const UserController = {
   signup: (req, res) => {
     accountServices.createNewAccount(req.body)
     .then(status => res.send(status))
-    .catch(err => res.send(err));
+    .catch(err => res.status(500).send(err));
   },
 
   updateAccount: (req, res) => {
     accountServices.updateAccount(req.body)
     .then(status => res.send(status))
-    .catch(err => res.send(err));
+    .catch(err => res.status(500).send(err));
   },
 
 };

@@ -8,11 +8,13 @@ const ScheduleController = {
   create: (req, res) => {
     scheduleServices.create(req.body)
     .then(status => res.send(status))
-    .catch(err => res.send(err));
+    .catch(err => res.status(500).send(err));
   },
 
   update: (req, res) => {
-    res.send('Schedule update not implemented yet.');
+    scheduleServices.update(req.body)
+    .then(status => res.send(status))
+    .catch(err => res.status(500).send(err));
   },
 
   destroy: (req, res) => {
