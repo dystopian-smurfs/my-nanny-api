@@ -1,4 +1,7 @@
 import Account from '../models/accountModel';
+import Child from '../models/childModel';
+import Schedule from '../models/scheduleModel';
+import Chore from '../models/choreModel';
 
 /**
   * @module Repository: Account
@@ -70,6 +73,47 @@ const accountRepository = {
   findAccountByUsername: username =>
     Account.findOne({ where: { username } }),
 
+  /**
+    * @function getAllAccountInfo
+    * @param {string} amazonId - The amazonId of the account
+    * @returns {object} - An object containing all relevant account info
+  */
+  getAllAccountInfo: amazonId =>
+    new Promise((resolve, reject) => {
+      Account.findOne({
+        where: {
+          amazonId,
+        },
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+        include: [{
+          model: Child,
+          include: [
+            {
+              model: Schedule,
+              attributes: {
+                exclude: ['createdAt', 'updatedAt'],
+              },
+            },
+            {
+              model: Chore,
+              attributes: {
+                exclude: ['createdAt', 'updatedAt'],
+              },
+            },
+          ],
+        }],
+      })
+      .then((foundAccount) => {
+        if (foundAccount) {
+          resolve(foundAccount);
+        } else {
+          resolve(null);
+        }
+      })
+      .catch(err => reject(err));
+    }),
 
 };
 

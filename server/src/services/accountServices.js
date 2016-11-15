@@ -34,8 +34,8 @@ const accountServices = {
         } else {
           const newAccount = accountRepository.create(data.account);
           newAccount.save();
-          const { username, token } = newAccount;
-          resolve(JSON.stringify({ username, token }));
+          const { id, username, token } = newAccount;
+          resolve(JSON.stringify({ id, username, token }));
         }
       });
     }),
@@ -52,11 +52,12 @@ const accountServices = {
       accountRepository.findAccountByAmazonId(data.account.amazonId)
       .then((account) => {
         if (!account) {
-          // If account does not exist, login
+          // If account does not exist, login fails
           reject('Failed to log in.');
         } else {
-          const { username, token } = account;
-          resolve(JSON.stringify({ username, token }));
+          // send them all the info for the account
+          accountRepository.getAllAccountInfo(account.amazonId)
+          .then(accountInfo => resolve(JSON.stringify(accountInfo)));
         }
       });
     }),

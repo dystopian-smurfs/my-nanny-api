@@ -1,5 +1,8 @@
 import Child from '../models/childModel';
 import Account from '../models/accountModel';
+import Schedule from '../models/scheduleModel';
+import Chore from '../models/choreModel';
+
 /**
   * @module Repository: Child
 */
@@ -69,6 +72,34 @@ const childrenRepository = {
         }
       })
       .catch(err => console.log(err));
+    }),
+
+  /**
+    * @function findAllByAmazonId
+    *
+    *
+    *
+    *
+  */
+  findAllByAmazonId: amazonId =>
+    new Promise((resolve, reject) => {
+      Account.findOne({
+        where: {
+          amazonId,
+        },
+        include: [{
+          model: Child,
+          include: [Schedule, Chore],
+        }],
+      })
+      .then((foundAccount) => {
+        if (foundAccount) {
+          resolve(foundAccount.children);
+        } else {
+          resolve(null);
+        }
+      })
+      .catch(err => reject(err));
     }),
 
   /**
