@@ -28,19 +28,32 @@ const schedlueServices = {
   */
   create: data =>
     new Promise((resolve, reject) => {
-      // Get the and the child
-      console.log('in create');
-      scheduleRepository.findScheduleIfExists(data.child, data.account.amazonId)
-      .then((schedule) => {
-        if (schedule) {
-          reject(() => 'Schedule already exists, please PUT to update a schedule');
+      // Check if the account exists
+      accountRepository.findAccountByAmazonId(data.account.amazonId)
+      .then((account) => {
+        if (!account) {
+          reject('Cannot add schedule, account does not exist.');
         } else {
-          childrenRepository.findOneByAmazonId()
+          // Check if the child exists
+          childrenRepository.findOneByAmazonId(data.child, data.account.amazonId)
           .then((child) => {
-            const newSchedule = scheduleRepository.create(data.schedule);
-            newSchedule.save()
-            .then(() => child.addSchedule(newSchedule))
-            .then(() => resolve('Successfully added schedule.'));
+            if (!child) {
+              reject('Cannot add schedule, child does not exist.');
+            } else {
+              // Get the schedule and the child
+              scheduleRepository.findScheduleIfExists(data.child, data.account.amazonId)
+              .then((schedule) => {
+                if (schedule) {
+                  console.log('REJECTED');
+                  reject('Schedule already exists, please PUT to update a schedule');
+                } else {
+                  const newSchedule = scheduleRepository.create(data.schedule, child);
+                  newSchedule.save()
+                  .then(() => child.setSchedule(newSchedule))
+                  .then(() => resolve('Successfully added schedule.'));
+                }
+              });
+            }
           });
         }
       });
