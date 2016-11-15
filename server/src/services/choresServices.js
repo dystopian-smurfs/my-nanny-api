@@ -45,10 +45,11 @@ const choresServices = {
               // This is to mitigate the number of requests
               const chores = data.chores;
               chores.forEach((chore) => {
-                const newChore = choresRepository.create(chore);
-                newChore.save();
+                const newChore = choresRepository.create(child, chore);
+                newChore.save()
+                .then(() => child.addChore(newChore));
                 // Associate the newChore with the child
-                child.addChore(newChore);
+                // child.addChore(newChore);
               });
               resolve('Chores added successfully.');
             }

@@ -50,24 +50,25 @@ describe('My-Nanny API', () => {
       json: {
         account: {
           token: '1234',
-          username: 'Test',
+          username: 'John',
           amazonId: '9999',
           timeZone: 'EST',
           phone: '1234567890',
-          email: 'test@example.com',
+          email: 'john@example.com',
         },
       },
     }, () => {
       // Now if we look in the database, we should find the
       // new Account there.
-      const queryString = 'SELECT * FROM accounts';
+      const queryString = 'SELECT * FROM accounts WHERE accounts.username = "John"';
       const queryArgs = [];
 
       dbConnection.query(queryString, queryArgs, (err, results) => {
         // Should have one result:
         expect(results.length).to.equal(1);
 
-        expect(results[0].username).to.equal('Test');
+        expect(results[0].username).to.equal('John');
+        expect(results[0].amazonId).to.equal('9999');
 
         done();
       });
@@ -82,22 +83,54 @@ describe('My-Nanny API', () => {
       json: {
         account: {
           token: '1234',
-          username: 'Test',
+          username: 'John',
           amazonId: '9999',
           timeZone: 'EST',
           phone: '1234567890',
-          email: 'test@example.com',
+          email: 'john@example.com',
         },
       },
     }, () => {
-      // Now if we look in the database, we should find the
-      // new Account there.
+      // Now if we look in the database, we should find only 1
       const queryString = 'SELECT * FROM accounts';
       const queryArgs = [];
 
       dbConnection.query(queryString, queryArgs, (err, results) => {
         // Should have one result:
         expect(results.length).to.equal(1);
+
+        done();
+      });
+    });
+  });
+
+  it('Should create another Account entry in the db on POST to /signup', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'POST',
+      uri: 'http://127.0.0.1:1337/signup',
+      json: {
+        account: {
+          token: '111',
+          username: 'Mary',
+          amazonId: '8888',
+          timeZone: 'EST',
+          phone: '0987654321',
+          email: 'mary@example.com',
+        },
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // new Account there.
+      const queryString = 'SELECT * FROM accounts WHERE accounts.username = "Mary"';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        expect(results.length).to.equal(1);
+
+        expect(results[0].username).to.equal('Mary');
+        expect(results[0].amazonId).to.equal('8888');
 
         done();
       });
@@ -114,20 +147,50 @@ describe('My-Nanny API', () => {
           amazonId: '9999',
         },
         child: {
-          name: 'Johnny',
+          name: 'Little-John',
           phone: '1112223333',
         },
       },
     }, () => {
       // Now if we look in the database, we should find the
       // child tied to amazonId 9999
-      const queryString = 'SELECT * FROM children LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = 9999';
+      const queryString = 'SELECT * FROM children LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = "9999"';
       const queryArgs = [];
 
       dbConnection.query(queryString, queryArgs, (err, results) => {
         // Should have one result:
         expect(results.length).to.equal(1);
-        expect(results[0].name).to.equal('Johnny');
+        expect(results[0].name).to.equal('Little-John');
+
+        done();
+      });
+    });
+  });
+
+  it('Should add another child to an account based on amazonId', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'POST',
+      uri: 'http://127.0.0.1:1337/api/children',
+      json: {
+        account: {
+          amazonId: '8888',
+        },
+        child: {
+          name: 'Little-Mary',
+          phone: '0009998888',
+        },
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // child tied to amazonId 9999
+      const queryString = 'SELECT * FROM children LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = 8888';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        expect(results.length).to.equal(1);
+        expect(results[0].name).to.equal('Little-Mary');
 
         done();
       });
@@ -144,7 +207,7 @@ describe('My-Nanny API', () => {
           amazonId: '9999',
         },
         child: {
-          name: 'Johnny',
+          name: 'Little-John',
           phone: '8889997777',
         },
       },
@@ -157,6 +220,48 @@ describe('My-Nanny API', () => {
       dbConnection.query(queryString, queryArgs, (err, results) => {
         // Should have one result:
         expect(results.length).to.equal(1);
+
+        done();
+      });
+    });
+  });
+
+  it('Should add chores to a child based on amazonId', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'POST',
+      uri: 'http://127.0.0.1:1337/api/chores',
+      json: {
+        account: {
+          amazonId: '9999',
+        },
+        child: {
+          name: 'Little-John',
+        },
+        chores: [
+          {
+            title: 'Wash the dishes',
+            details: 'With soap this time...',
+            date: '2016-11-14',
+          },
+          {
+            title: 'Mop the floor',
+            details: 'The Fabuloso is under the sink',
+            date: '2017-09-24',
+          },
+        ],
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // that there is still only 1 child
+      const queryString = 'SELECT * FROM chores LEFT JOIN children ON chores.childId = children.id LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = 9999';
+      // const queryString = 'SELECT * FROM chores';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        // console.log('QUERY RESULTS', results);
+        expect(results.length).to.equal(2);
 
         done();
       });

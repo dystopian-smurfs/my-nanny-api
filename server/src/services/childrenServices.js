@@ -37,8 +37,8 @@ const childrenServices = {
               reject('Child already exists');
             } else {
               const newChild = childrenRepository.create(account, data.child);
-              newChild.save();
-              account.addChild(newChild);
+              newChild.save()
+              .then(() => account.addChild(newChild));
               resolve('Child successfully added.');
             }
           });
