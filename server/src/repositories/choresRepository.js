@@ -11,19 +11,14 @@ const choresRepository = {
     * @param data.description - Extra details for the child
     * @param data.date - "2016-14-3"
   */
-  // create: function createChore({ title, details, date }) {
-  //   return Chore.build({
-  //     title,
-  //     details,
-  //     date,
-  //     completed: 'false',
-  //   });
-  // },
   create: function createChild(child, { title, details, date }) {
     return Chore.build(Object.assign({},
-      { childId: child.get('id') },
-      { title, details, date, completed: false },
-      ));
+      {
+        childId: child.get('id'),
+      },
+      {
+        title, details, date, completed: false,
+      }));
   },
   /**
     * @function update
