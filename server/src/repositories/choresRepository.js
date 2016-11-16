@@ -11,15 +11,15 @@ const choresRepository = {
     * @param data.description - Extra details for the child
     * @param data.date - "2016-14-3"
   */
-  create: function createChild(child, { title, details, date }) {
-    return Chore.build(Object.assign({},
+  create: (child, { title, details, date }) =>
+    Chore.build(Object.assign({},
       {
         childId: child.get('id'),
       },
       {
         title, details, date, completed: false,
-      }));
-  },
+      })),
+
   /**
     * @function update
     * @param {object} chore - Instance of a chore from the db

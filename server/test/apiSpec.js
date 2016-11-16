@@ -226,7 +226,7 @@ describe('My-Nanny API', () => {
     });
   });
 
-  it('Should add chores to a child based on amazonId', (done) => {
+  it('Should add chores to a child based on their id and account amazonId', (done) => {
     // Post the user to /signup.
     request({
       method: 'POST',
@@ -236,7 +236,7 @@ describe('My-Nanny API', () => {
           amazonId: '9999',
         },
         child: {
-          name: 'Little-John',
+          id: 1,
         },
         chores: [
           {
@@ -278,7 +278,7 @@ describe('My-Nanny API', () => {
           amazonId: '9999',
         },
         child: {
-          name: 'Little-John',
+          id: 1,
         },
         schedule: {
           defaultCurfews: [
@@ -320,7 +320,7 @@ describe('My-Nanny API', () => {
           amazonId: '0987',
         },
         child: {
-          name: 'Little-John',
+          id: 1,
         },
         schedule: {
           defaultCurfews: [
@@ -361,7 +361,7 @@ describe('My-Nanny API', () => {
           amazonId: '9999',
         },
         child: {
-          name: 'Little-John',
+          id: 1,
         },
         schedule: {
           defaultCurfews: [
@@ -403,7 +403,7 @@ describe('My-Nanny API', () => {
           amazonId: '9999',
         },
         child: {
-          name: 'Fake-John',
+          id: 0,
         },
         schedule: {
           defaultCurfews: [

@@ -32,7 +32,7 @@ const scheduleRepository = {
 
   save: schedule => schedule.save(),
 
-  findScheduleIfExists: ({ name }, amazonId) =>
+  findScheduleIfExists: ({ id }, amazonId) =>
     new Promise((resolve, reject) => {
       Account.findOne({
         where: {
@@ -41,7 +41,7 @@ const scheduleRepository = {
         include: [{
           model: Child,
           where: {
-            name,
+            id,
           },
           include: [Schedule],
         }],

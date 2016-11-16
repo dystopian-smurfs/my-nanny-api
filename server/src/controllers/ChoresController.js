@@ -2,7 +2,7 @@ import choresServices from '../services/choresServices';
 
 const ChoresController = {
   create: (req, res) => {
-    choresServices.addChore(req.body)
+    choresServices.create(req.body)
     .then(status => res.send(status))
     .catch(err => res.status(500).send(err));
   },
@@ -16,7 +16,9 @@ const ChoresController = {
   },
 
   update: (req, res) => {
-    res.send('Chors update is not implemented yet');
+    choresServices.update()
+    .then(status => res.send(status))
+    .catch(err => res.status(500).send(err));
   },
 
   destroy: (req, res) => {

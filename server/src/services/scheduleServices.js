@@ -35,8 +35,9 @@ const schedlueServices = {
           reject('Cannot add schedule, account does not exist.');
         } else {
           // Check if the child exists
-          childrenRepository.findOneByAmazonId(data.child, data.account.amazonId)
+          childrenRepository.findOneByIdAmazonId(data.child, data.account.amazonId)
           .then((child) => {
+            console.log('##########################FOUND CHILD', child);
             if (!child) {
               reject('Cannot add schedule, child does not exist.');
             } else {

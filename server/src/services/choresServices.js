@@ -15,7 +15,7 @@ import db from '../connection';
 const choresServices = {
 
   /**
-    * @function addChild
+    * @function create
     * @param {object} data - Contains separate account and child objects
     * @param {object} data.account - Contains a account's info
     * @param {string} data.account.amazonId
@@ -27,7 +27,7 @@ const choresServices = {
     * @param {string} data.chore.date - "2016-12-24"
     * @returns {promise}
   */
-  addChore: data =>
+  create: data =>
     new Promise((resolve, reject) => {
       accountRepository.findAccountByAmazonId(data.account.amazonId)
       .then((account) => {
@@ -35,7 +35,7 @@ const choresServices = {
           reject('Cannot add chore, account does not exist.');
         } else {
           // Find the account's child (by name) that the chore is for
-          childrenRepository.findOneByAmazonId(data.child, data.account.amazonId)
+          childrenRepository.findOneByIdAmazonId(data.child, data.account.amazonId)
           .then((child) => {
             if (!child) {
               reject('Cannot add chore, child does not exist.');
@@ -56,6 +56,11 @@ const choresServices = {
           });
         }
       });
+    }),
+
+  update: data =>
+    new Promise((resolve, reject) => {
+
     }),
 
 };
