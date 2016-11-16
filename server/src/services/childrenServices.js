@@ -31,7 +31,7 @@ const childrenServices = {
         if (!account) {
           reject('Cannot add child, account does not exist.');
         } else {
-          childrenRepository.findOneByAmazonId(data.child, data.account.amazonId)
+          childrenRepository.findOneByNameAmazonId(data.child, data.account.amazonId)
           .then((children) => {
             if (children) {
               reject('Child already exists');
@@ -64,22 +64,14 @@ const childrenServices = {
         if (!account) {
           reject('Cannot edit child, account does not exist.');
         } else {
-          childrenRepository.findOneByAmazonId(data.child, data.account.amazonId)
+          childrenRepository.findOneByIdAmazonId(data.child, data.account.amazonId)
           .then((child) => {
             if (!child) {
               reject('Child doesn\'t exist.');
             } else {
-              // Check if another child is already called what you passed in as name
-              childrenRepository.findOneByAmazonId(data.updatedChild, data.account.amazonId)
-              .then((duplicateChild) => {
-                if (duplicateChild) {
-                  reject('Another child is already named what you tried to update this child');
-                } else {
-                  child.updateAttributes(data.updatedChild)
-                  .on('success', resolve('Child updated successfully.'))
-                  .on('error', reject('Error updating child.'));
-                }
-              });
+              child.updateAttributes(data.child)
+              .on('success', resolve('Child updated successfully.'))
+              .on('error', reject('Error updating child.'));
             }
           });
         }

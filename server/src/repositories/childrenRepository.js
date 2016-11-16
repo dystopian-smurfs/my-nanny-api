@@ -44,14 +44,45 @@ const childrenRepository = {
   save: child => child.save(),
 
   /**
-    * @function findAccountByAmazonId
-    * @desc Finds all children of a account based on their name
+    * @function findOneByIdAmazonId
+    * @desc Finds one child based on their name and accoutn amazonId
     * @param {object} child
     * @param {string} child.name
     * @param {string} amazonId - The amazonId of the account
     * @returns {promise} promise - Resolves to array of children or []
    */
-  findOneByAmazonId: ({ name }, amazonId) =>
+  findOneByIdAmazonId: ({ id }, amazonId) =>
+    new Promise((resolve) => {
+      Account.findOne({
+        where: {
+          amazonId,
+        },
+        include: [{
+          model: Child,
+          where: {
+            id,
+          },
+        }],
+      })
+      .then((foundAccount) => {
+        if (foundAccount) {
+          resolve(foundAccount.children[0]);
+        } else {
+          resolve(null);
+        }
+      })
+      .catch(err => console.log(err));
+    }),
+
+  /**
+    * @function findOneByIdAmazonId
+    * @desc Finds one child of a account based on their id and account amazonId
+    * @param {object} child
+    * @param {string} child.name
+    * @param {string} amazonId - The amazonId of the account
+    * @returns {promise} promise - Resolves to array of children or []
+   */
+  findOneByNameAmazonId: ({ name }, amazonId) =>
     new Promise((resolve) => {
       Account.findOne({
         where: {
