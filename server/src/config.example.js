@@ -1,5 +1,5 @@
 export default {
-  port: 8080,
+  port: 1337,
 
   // SQL credentials
   username: 'FILL_ME_IN',
