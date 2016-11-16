@@ -1,20 +1,9 @@
 import accountServices from '../services/accountServices';
 
 const UserController = {
-  login: (req, res) => {
-    accountServices.login(req.body)
-    .then(status => res.send(status))
-    .catch(err => res.status(500).send(err));
-  },
-
   logout: (req, res) => {
-    res.send('User logout is not implemented yet');
-  },
-
-  signup: (req, res) => {
-    accountServices.createNewAccount(req.body)
-    .then(status => res.send(status))
-    .catch(err => res.status(500).send(err));
+    req.logout();
+    res.sendStatus(200);
   },
 
   updateAccount: (req, res) => {

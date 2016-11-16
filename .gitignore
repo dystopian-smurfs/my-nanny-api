@@ -6,3 +6,4 @@ server/src/config.js
 
 # Exception, this is so that the docs folder shows up in commits
 !.gitkeep
+npm-debug.log

@@ -3,84 +3,37 @@ import UserController from './controllers/UserController';
 import ChildrenController from './controllers/ChildrenController';
 import ScheduleController from './controllers/ScheduleController';
 
-const routes = (app) => {
+/**
+  Use this function to authenticate endpoints
+
+  Example Use:
+  app.get('/secure', ensureAuthenticated, CONTROLLER.function);
+*/
+const ensureAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) { return next(); }
+  res.sendStatus(401);
+};
+
+const routes = (app, passport) => {
+  //TEST
+  app.get('/test', ensureAuthenticated, (req, res) => {
+    return res.sendStatus(200);
+  });
+
   /* /////// DOCS /////// */
   app.get('/', (req, res) => res.render('index', { title: 'my-nanny docs' }));
 
   /* /////// AUTH /////// */
 
-  /**
-  * @api {post} /login Login
-  * @apiGroup Auth
-  *
-  * @apiParamExample POST format:
-  *     {
-  *       "account": {
-  *         "amazonId": "999888777666"
-  *       }
-  *     }
-  *
-  * @apiSuccessExample Success-Response:
-  *
-  *     {
-  *       "account": {
-  *         "id": 1,
-  *         "token": "1234",
-  *         "username": "Mary",
-  *         "amazonId": "999888777666",
-  *         "timeZone": "EST",
-  *         "phone": "1234567890",
-  *         "email": "mary@example.com"
-  *       },
-  *       "children": [
-  *         {
-  *           "id": 1,
-  *           "name": "Winston",
-  *           "accountId": 1,
-  *           "schedule": {
-  *             "id": 15,
-  *             "dateOfLastCurfew": "2000-12-31",
-  *             "sunday": "null",
-  *             "monday": "14:45",
-  *             "tuesday": "12:30",
-  *             "wednesday": "14:05",
-  *             "thursday": "18:30",
-  *             "friday": "14:00",
-  *             "saturday": "09:30",
-  *             "sunday": "null",
-  *             "childId": 1
-  *           },
-  *           "chores": [
-  *             {
-  *               "id":3,
-  *               "title": "Clean your room",
-  *               "details": "Please clean your room nice and neat. Vaccuum it too!",
-  *               "date": "2016-12-24",
-  *               "completed": false,
-  *               "childId": 1
-  *             },
-  *             {
-  *               "id":4,
-  *               "title": "Wash the dishes",
-  *               "details": "Use the blue sponge under the sink.",
-  *               "date": "2016-12-24",
-  *               "completed": true,
-  *               "childId": 1
-  *             }
-  *           ],
-  *         },
-  *         {
-  *           "id": 2,
-  *           "name": "Wendy",
-  *           "accountId": 1,
-  *           "chores": [],
-  *           "schedule": null
-  *         }
-  *       ]
-  *     }
-  *
-  */
-  app.post('/login', UserController.login);
+  app.get('/login',
+          passport.authenticate('amazon', { scope: ['profile', 'postal_code'] }),
+          (req, res) => {});
+
+  app.get('/login/callback', 
+          passport.authenticate('amazon', { failureRedirect: '/login' }),
+          function(req, res) {
+            res.redirect('/');
+          });
 
   /**
   * @api {post} /logout Logout
@@ -92,28 +45,6 @@ const routes = (app) => {
   * @apiError Failed to log out.
   */
   app.post('/logout', UserController.logout);
-
-  /**
-  * @api {post} /signup Signup
-  * @apiGroup Auth
-  *
-  * @apiParamExample POST format:
-  *     {
-  *       "account": {
-  *         "token": "1234",
-  *         "username": "Mary",
-  *         "amazonId": "999888777666",
-  *         "timeZone": "EST",
-  *         "phone": "1234567890",
-  *         "email": "mary@example.com"
-  *       }
-  *     }
-  *
-  * @apiSuccess {String} Account successfully created.
-  *
-  * @apiError Failed to create account.
-  */
-  app.post('/signup', UserController.signup);
 
   /* /////// ACCOUNT /////// */
 
