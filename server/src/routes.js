@@ -331,7 +331,7 @@ const routes = (app) => {
   *         "amazonId": "999888777666"
   *       },
   *       "child": {
-  *         "name": "Winston"
+  *         "id": "1"
   *       },
   *       "schedule": {
   *         "monday": "null",
@@ -341,6 +341,7 @@ const routes = (app) => {
   *         "friday": "14:00",
   *         "saturday": "09:30",
   *         "sunday": "null"
+  *       }
   *     }
   *
   * @apiSuccess {String} Successfully added chore.
