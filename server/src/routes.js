@@ -228,8 +228,8 @@ const routes = (app) => {
   *         "amazonId": "999888777666"
   *       },
   *       "child": {
-  *         "id": 3
-  *         "name": "Angus"
+  *         "id": 3,
+  *         "name": "Angus",
   *         "phone": "0009990000"
   *       }
   *     }
