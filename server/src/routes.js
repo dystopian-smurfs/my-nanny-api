@@ -137,7 +137,7 @@ const routes = (app) => {
   * @api {get} /api/account Get account info
   * @apiGroup Account
   *
-  * @apiParamExample POST format:
+  * @apiParamExample GET format:
   *      https://api.my-nanny.org/api/account?amazonId=5555
   *
   * @apiSuccessExample Success-Response:
