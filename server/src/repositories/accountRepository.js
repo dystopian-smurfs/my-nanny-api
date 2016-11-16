@@ -89,6 +89,9 @@ const accountRepository = {
         },
         include: [{
           model: Child,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
           include: [
             {
               model: Schedule,

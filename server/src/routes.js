@@ -24,57 +24,54 @@ const routes = (app) => {
   *
   *     {
   *       "account": {
-  *         "amazonId": "999888777666"
+  *         "id": 1,
+  *         "token": "1234",
+  *         "username": "Mary",
+  *         "amazonId": "999888777666",
+  *         "timeZone": "EST",
+  *         "phone": "1234567890",
+  *         "email": "mary@example.com"
   *       },
   *       "children": [
   *         {
+  *           "id": 1,
   *           "name": "Winston",
+  *           "accountId": 1,
+  *           "schedule": {
+  *             "id": 15,
+  *             "defaultCurfews": "[null,\"18:30\",\"14:30\",\"17:00\",\"22:00\",\"17:00\",null]",
+  *             "dateOfLastCurfew": "2000-12-31",
+  *             "childId": 1
+  *           },
   *           "chores": [
   *             {
+  *               "id":3,
   *               "title": "Clean your room",
   *               "details": "Please clean your room nice and neat. Vaccuum it too!",
   *               "date": "2016-12-24",
-  *               "completed": false
+  *               "completed": false,
+  *               "childId": 1
   *             },
   *             {
+  *               "id":4,
   *               "title": "Wash the dishes",
   *               "details": "Use the blue sponge under the sink.",
   *               "date": "2016-12-24",
-  *               "completed": true
+  *               "completed": true,
+  *               "childId": 1
   *             }
   *           ],
-  *           "checkedIn": false,
-  *           "schedule": {
-  *             "defaultCurfews": [null, "18:30", "14:30", "17:00", "22:00", "17:00", null],
-  *             "dateOfLastCurfew": "2016-11-14"
-  *           }
   *         },
   *         {
+  *           "id": 2,
   *           "name": "Wendy",
-  *           "chores": [
-  *             {
-  *               "title": "Clean your room",
-  *               "details": "Please clean your room nice and neat. Vaccuum it too!",
-  *               "date": "2016-12-24"
-  *               "completed": true
-  *             },
-  *             {
-  *               "title": "Wash the dishes",
-  *               "details": "Use the blue sponge under the sink.",
-  *               "date": "2016-12-24",
-  *               "completed": false
-  *             }
-  *           ],
-  *           "checkedIn": true,
-  *           "schedule": {
-  *             "defaultCurfews": [null, "18:30", "14:30", "17:00", "22:00", "17:00", null],
-  *             "dateOfLastCurfew": "2016-11-13"
-  *           }
+  *           "accountId": 1,
+  *           "chores": [],
+  *           "schedule": null
   *         }
   *       ]
   *     }
   *
-  * @apiError Failed to log in.
   */
   app.post('/login', UserController.login);
 
@@ -133,6 +130,72 @@ const routes = (app) => {
   * @apiSuccess {String} Successfully updated account.
   *
   * @apiError Failed to update account.
+  */
+  app.put('/api/account', UserController.updateAccount);
+
+  /**
+  * @api {get} /api/account Update Account
+  * @apiGroup Account
+  *
+  * @apiParamExample POST format:
+  *     {
+  *       "account": {
+  *         "amazonId": "999888777666"
+  *       }
+  *     }
+  *
+  * @apiSuccessExample Success-Response:
+  *
+  *     {
+  *       "account": {
+  *         "id": 1,
+  *         "token": "1234",
+  *         "username": "Mary",
+  *         "amazonId": "999888777666",
+  *         "timeZone": "EST",
+  *         "phone": "1234567890",
+  *         "email": "mary@example.com"
+  *       },
+  *       "children": [
+  *         {
+  *           "id": 1,
+  *           "name": "Winston",
+  *           "accountId": 1,
+  *           "schedule": {
+  *             "id": 15,
+  *             "defaultCurfews": "[null,\"18:30\",\"14:30\",\"17:00\",\"22:00\",\"17:00\",null]",
+  *             "dateOfLastCurfew": "2000-12-31",
+  *             "childId": 1
+  *           },
+  *           "chores": [
+  *             {
+  *               "id":3,
+  *               "title": "Clean your room",
+  *               "details": "Please clean your room nice and neat. Vaccuum it too!",
+  *               "date": "2016-12-24",
+  *               "completed": false,
+  *               "childId": 1
+  *             },
+  *             {
+  *               "id":4,
+  *               "title": "Wash the dishes",
+  *               "details": "Use the blue sponge under the sink.",
+  *               "date": "2016-12-24",
+  *               "completed": true,
+  *               "childId": 1
+  *             }
+  *           ],
+  *         },
+  *         {
+  *           "id": 2,
+  *           "name": "Wendy",
+  *           "accountId": 1,
+  *           "chores": [],
+  *           "schedule": null
+  *         }
+  *       ]
+  *     }
+  *
   */
   app.put('/api/account', UserController.updateAccount);
 
