@@ -134,14 +134,12 @@ const routes = (app) => {
   app.put('/api/account', UserController.updateAccount);
 
   /**
-  * @api {get} /api/account Update Account
+  * @api {get} /api/account Get account info DOES NOT WORK YET
   * @apiGroup Account
   *
   * @apiParamExample POST format:
   *     {
-  *       "account": {
-  *         "amazonId": "999888777666"
-  *       }
+  *       "YOU CANT SEND A BODY IN A GET REQUEST": "SAD"
   *     }
   *
   * @apiSuccessExample Success-Response:
