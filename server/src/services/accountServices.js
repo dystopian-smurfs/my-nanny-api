@@ -83,6 +83,20 @@ const accountServices = {
       });
     }),
 
+  getAccountInfo: data =>
+    new Promise((resolve, reject) => {
+      accountRepository.findAccountByAmazonId(data.account.amazonId)
+      .then((account) => {
+        if (!account) {
+          // If account does not exist, login fails
+          reject('Failed to get account info, account does not exist.');
+        } else {
+          // send them all the info for the account
+          accountRepository.getAllAccountInfo(account.amazonId)
+          .then(accountInfo => resolve(JSON.stringify(accountInfo)));
+        }
+      });
+    }),
 };
 
 export default accountServices;

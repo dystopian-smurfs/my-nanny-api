@@ -138,9 +138,7 @@ const routes = (app) => {
   * @apiGroup Account
   *
   * @apiParamExample POST format:
-  *     {
-  *       "YOU CANT SEND A BODY IN A GET REQUEST": "SAD"
-  *     }
+  *      https://api.my-nanny.org/api/account?amazonId=5555
   *
   * @apiSuccessExample Success-Response:
   *
@@ -195,7 +193,7 @@ const routes = (app) => {
   *     }
   *
   */
-  app.put('/api/account', UserController.updateAccount);
+  app.get('/api/account', UserController.getInfo);
 
   /* /////// CHILDREN /////// */
 

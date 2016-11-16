@@ -23,6 +23,16 @@ const UserController = {
     .catch(err => res.status(500).send(err));
   },
 
+  getInfo: (req, res) => {
+    accountServices.getAccountInfo({
+      account: {
+        amazonId: req.query.amazonId,
+      },
+    })
+    .then(status => res.send(status))
+    .catch(err => res.status(500).send(err));
+  },
+
 };
 
 export default UserController;
