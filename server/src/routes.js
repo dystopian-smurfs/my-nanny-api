@@ -134,7 +134,7 @@ const routes = (app) => {
   app.put('/api/account', UserController.updateAccount);
 
   /**
-  * @api {get} /api/account Get account info DOES NOT WORK YET
+  * @api {get} /api/account Get account info
   * @apiGroup Account
   *
   * @apiParamExample POST format:
