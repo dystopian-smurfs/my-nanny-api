@@ -281,15 +281,14 @@ describe('My-Nanny API', () => {
           id: 1,
         },
         schedule: {
-          defaultCurfews: [
-            null,
-            '18:30',
-            '14:30',
-            '17:00',
-            '22:00',
-            '17:00',
-            null,
-          ],
+          dateOfLastCurfew: '2000-12-31',
+          sunday: 'null',
+          monday: '02:40',
+          tuesday: '12:30',
+          wednesday: '14:05',
+          thursday: '18:30',
+          friday: '14:00',
+          saturday: 'null',
         },
       },
     }, () => {
@@ -304,6 +303,7 @@ describe('My-Nanny API', () => {
         // console.log('QUERY RESULTS', results);
         expect(results.length).to.equal(1);
         expect(results[0].childId).to.equal(1);
+        expect(results[0].monday).to.equal('02:40');
 
         done();
       });
@@ -317,62 +317,20 @@ describe('My-Nanny API', () => {
       uri: 'http://127.0.0.1:1337/api/schedule',
       json: {
         account: {
-          amazonId: '0987',
+          amazonId: '92837401923874',
         },
         child: {
           id: 1,
         },
         schedule: {
-          defaultCurfews: [
-            null,
-            '18:30',
-            '14:30',
-            '17:00',
-            '22:00',
-            '17:00',
-            null,
-          ],
-        },
-      },
-    }, () => {
-      // Now if we look in the database, we should find the
-      // that Little-John has a schedule with childId that matched his id
-      const queryString = 'SELECT * FROM schedules';
-      // const queryString = 'SELECT * FROM chores';
-      const queryArgs = [];
-
-      dbConnection.query(queryString, queryArgs, (err, results) => {
-        // Should have one result:
-        // console.log('QUERY RESULTS', results);
-        expect(results.length).to.equal(1);
-
-        done();
-      });
-    });
-  });
-
-  it('Should not add a schedule entry to a child if the child already has a schedule associated with it', (done) => {
-    // Post the user to /signup.
-    request({
-      method: 'POST',
-      uri: 'http://127.0.0.1:1337/api/schedule',
-      json: {
-        account: {
-          amazonId: '9999',
-        },
-        child: {
-          id: 1,
-        },
-        schedule: {
-          defaultCurfews: [
-            null,
-            '18:30',
-            '14:30',
-            '17:00',
-            '22:00',
-            '17:00',
-            null,
-          ],
+          dateOfLastCurfew: '2000-12-31',
+          sunday: 'null',
+          monday: '02:40',
+          tuesday: '12:30',
+          wednesday: '14:05',
+          thursday: '18:30',
+          friday: '14:00',
+          saturday: 'null',
         },
       },
     }, () => {
@@ -386,6 +344,52 @@ describe('My-Nanny API', () => {
         // Should have one result:
         // console.log('QUERY RESULTS', results);
         expect(results.length).to.equal(1);
+        expect(results[0].childId).to.equal(1);
+        expect(results[0].monday).to.equal('02:40');
+
+        done();
+      });
+    });
+  });
+
+  it('Should not add a schedule to a child if the account does not exist', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'POST',
+      uri: 'http://127.0.0.1:1337/api/schedule',
+      json: {
+        account: {
+          amazonId: '9999',
+        },
+        child: {
+          id: 1,
+        },
+        schedule: {
+          dateOfLastCurfew: '2000-12-31',
+          sunday: 'null',
+          monday: 'null',
+          tuesday: 'null',
+          wednesday: '14:05',
+          thursday: '18:30',
+          friday: '14:00',
+          saturday: 'null',
+        },
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // that Little-John has a schedule with childId that matched his id
+      const queryString = 'SELECT * FROM schedules LEFT JOIN children ON schedules.childId = children.id LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = 9999';
+      // const queryString = 'SELECT * FROM chores';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        // console.log('QUERY RESULTS', results);
+        expect(results.length).to.equal(1);
+        expect(results[0].childId).to.equal(1);
+        // If this POST worked, it would make monday null
+        // We want it to NOT do that
+        expect(results[0].monday).to.equal('02:40');
 
         done();
       });
@@ -403,24 +407,23 @@ describe('My-Nanny API', () => {
           amazonId: '9999',
         },
         child: {
-          id: 0,
+          id: 99999999,
         },
         schedule: {
-          defaultCurfews: [
-            null,
-            '18:30',
-            '14:30',
-            '17:00',
-            '22:00',
-            '17:00',
-            null,
-          ],
+          dateOfLastCurfew: '2000-12-31',
+          sunday: 'null',
+          monday: 'null',
+          tuesday: 'null',
+          wednesday: '14:05',
+          thursday: '18:30',
+          friday: '14:00',
+          saturday: 'null',
         },
       },
     }, () => {
       // Now if we look in the database, we should find the
       // that Little-John has a schedule with childId that matched his id
-      const queryString = 'SELECT * FROM schedules ';
+      const queryString = 'SELECT * FROM schedules LEFT JOIN children ON schedules.childId = children.id LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = 9999';
       // const queryString = 'SELECT * FROM chores';
       const queryArgs = [];
 
@@ -428,6 +431,131 @@ describe('My-Nanny API', () => {
         // Should have one result:
         // console.log('QUERY RESULTS', results);
         expect(results.length).to.equal(1);
+        done();
+      });
+    });
+  });
+
+  it('Should update a schedule with a PUT', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'PUT',
+      uri: 'http://127.0.0.1:1337/api/schedule',
+      json: {
+        account: {
+          amazonId: '9999',
+        },
+        child: {
+          id: 1,
+        },
+        schedule: {
+          dateOfLastCurfew: '2000-12-31',
+          sunday: 'null',
+          monday: 'null',
+          tuesday: 'null',
+          wednesday: '14:05',
+          thursday: '18:30',
+          friday: '14:00',
+          saturday: 'null',
+        },
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // that Little-John has a schedule with childId that matched his id
+      const queryString = 'SELECT * FROM schedules LEFT JOIN children ON schedules.childId = children.id LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = 9999';
+      // const queryString = 'SELECT * FROM chores';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        // console.log('QUERY RESULTS', results);
+        expect(results.length).to.equal(1);
+        expect(results[0].childId).to.equal(1);
+        expect(results[0].monday).to.equal('null');
+
+        done();
+      });
+    });
+  });
+
+  it('Should NOT update a schedule with a PUT if the child doesnt exist', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'PUT',
+      uri: 'http://127.0.0.1:1337/api/schedule',
+      json: {
+        account: {
+          amazonId: '9999',
+        },
+        child: {
+          id: 1032840912834,
+        },
+        schedule: {
+          dateOfLastCurfew: '2000-12-31',
+          sunday: 'null',
+          monday: 'null',
+          tuesday: 'null',
+          wednesday: '14:05',
+          thursday: '18:30',
+          friday: 'null',
+          saturday: 'null',
+        },
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // that Little-John has a schedule with childId that matched his id
+      const queryString = 'SELECT * FROM schedules LEFT JOIN children ON schedules.childId = children.id LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = 9999';
+      // const queryString = 'SELECT * FROM chores';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        // console.log('QUERY RESULTS', results);
+        expect(results.length).to.equal(1);
+        expect(results[0].childId).to.equal(1);
+        expect(results[0].friday).to.equal('14:00');
+
+        done();
+      });
+    });
+  });
+
+  it('Should NOT update a schedule with a PUT if the account doesnt exist', (done) => {
+    // Post the user to /signup.
+    request({
+      method: 'PUT',
+      uri: 'http://127.0.0.1:1337/api/schedule',
+      json: {
+        account: {
+          amazonId: '012394812039480129834',
+        },
+        child: {
+          id: 1,
+        },
+        schedule: {
+          dateOfLastCurfew: '2000-12-31',
+          sunday: 'null',
+          monday: 'null',
+          tuesday: 'null',
+          wednesday: '14:05',
+          thursday: 'null',
+          friday: '14:00',
+          saturday: 'null',
+        },
+      },
+    }, () => {
+      // Now if we look in the database, we should find the
+      // that Little-John has a schedule with childId that matched his id
+      const queryString = 'SELECT * FROM schedules LEFT JOIN children ON schedules.childId = children.id LEFT JOIN accounts ON children.accountId = accounts.id WHERE accounts.amazonId = 9999';
+      // const queryString = 'SELECT * FROM chores';
+      const queryArgs = [];
+
+      dbConnection.query(queryString, queryArgs, (err, results) => {
+        // Should have one result:
+        // console.log('QUERY RESULTS', results);
+        expect(results.length).to.equal(1);
+        expect(results[0].childId).to.equal(1);
+        expect(results[0].thursday).to.equal('18:30');
 
         done();
       });

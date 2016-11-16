@@ -2,7 +2,13 @@ import Sequelize from 'sequelize';
 import db from '../connection';
 
 const Schedule = db.define('schedule', {
-  defaultCurfews: Sequelize.STRING,
+  sunday: Sequelize.STRING,
+  monday: Sequelize.STRING,
+  tuesday: Sequelize.STRING,
+  wednesday: Sequelize.STRING,
+  thursday: Sequelize.STRING,
+  friday: Sequelize.STRING,
+  saturday: Sequelize.STRING,
   dateOfLastCurfew: Sequelize.STRING,
 });
 

@@ -37,7 +37,6 @@ const schedlueServices = {
           // Check if the child exists
           childrenRepository.findOneByIdAmazonId(data.child, data.account.amazonId)
           .then((child) => {
-            console.log('##########################FOUND CHILD', child);
             if (!child) {
               reject('Cannot add schedule, child does not exist.');
             } else {
@@ -45,7 +44,6 @@ const schedlueServices = {
               scheduleRepository.findScheduleIfExists(data.child, data.account.amazonId)
               .then((schedule) => {
                 if (schedule) {
-                  console.log('REJECTED');
                   reject('Schedule already exists, please PUT to update a schedule');
                 } else {
                   const newSchedule = scheduleRepository.create(data.schedule, child);
@@ -60,7 +58,34 @@ const schedlueServices = {
       });
     }),
 
-  update: data => null,
+  update: data =>
+    new Promise((resolve, reject) => {
+      // Check if the account exists
+      accountRepository.findAccountByAmazonId(data.account.amazonId)
+      .then((account) => {
+        if (!account) {
+          reject('Cannot update schedule, account does not exist.');
+        } else {
+          // Check if the child exists
+          childrenRepository.findOneByIdAmazonId(data.child, data.account.amazonId)
+          .then((child) => {
+            if (!child) {
+              reject('Cannot update schedule, child does not exist');
+            } else {
+              scheduleRepository.findScheduleIfExists(data.child, data.account.amazonId)
+              .then((schedule) => {
+                if (!schedule) {
+                  reject('Cannot update schedule, schedule does not exist.');
+                } else {
+                  scheduleRepository.update(schedule, data.schedule)
+                  .then(() => resolve('Successfully updated schedule.'));
+                }
+              });
+            }
+          });
+        }
+      });
+    }),
 
   destroy: data => null,
 

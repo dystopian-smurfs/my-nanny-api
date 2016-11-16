@@ -6,11 +6,19 @@ import Child from '../models/childModel';
   * @module Repository: Schedule
 */
 const scheduleRepository = {
-  create: function createschedule({ defaultCurfews }, child) {
+  create: function createschedule({
+    sunday, monday, tuesday, wednesday, thursday, friday, saturday,
+  }, child) {
     return Schedule.build(
       Object.assign({}, { childId: child.get('id') },
         {
-          defaultCurfews: JSON.stringify(defaultCurfews),
+          sunday,
+          monday,
+          tuesday,
+          wednesday,
+          thursday,
+          friday,
+          saturday,
           dateOfLastCurfew: '2000-12-31',
         }));
   },
@@ -20,13 +28,13 @@ const scheduleRepository = {
     * @param {object} schedule - Instance of a schedule from the db
     * @param {object} changedAttributes - Obj with the keys and attributes to be updated
   */
-  update: (schedule, changedAttributes) => {
+  update: (schedule, changedAttributes) =>
     schedule.update(changedAttributes)
     .then((res) => {
       console.log('Schedule successfully updated');
       return res;
-    });
-  },
+    })
+    .catch(err => new Error('Error updating schedule', err)),
 
   destroy: schedule => schedule.destroy(),
 

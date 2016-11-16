@@ -39,8 +39,15 @@ const routes = (app) => {
   *           "accountId": 1,
   *           "schedule": {
   *             "id": 15,
-  *             "defaultCurfews": "[null,\"18:30\",\"14:30\",\"17:00\",\"22:00\",\"17:00\",null]",
   *             "dateOfLastCurfew": "2000-12-31",
+  *             "sunday": "null",
+  *             "monday": "14:45",
+  *             "tuesday": "12:30",
+  *             "wednesday": "14:05",
+  *             "thursday": "18:30",
+  *             "friday": "14:00",
+  *             "saturday": "09:30",
+  *             "sunday": "null",
   *             "childId": 1
   *           },
   *           "chores": [
@@ -138,7 +145,7 @@ const routes = (app) => {
   * @apiGroup Account
   *
   * @apiParamExample GET format:
-  *      https://api.my-nanny.org/api/account?amazonId=5555
+  *      https://api.my-nanny.org/api/account?amazonId=999888777666
   *
   * @apiSuccessExample Success-Response:
   *
@@ -159,8 +166,15 @@ const routes = (app) => {
   *           "accountId": 1,
   *           "schedule": {
   *             "id": 15,
-  *             "defaultCurfews": "[null,\"18:30\",\"14:30\",\"17:00\",\"22:00\",\"17:00\",null]",
   *             "dateOfLastCurfew": "2000-12-31",
+  *             "sunday": "null",
+  *             "monday": "null",
+  *             "tuesday": "12:30",
+  *             "wednesday": "14:05",
+  *             "thursday": "18:30",
+  *             "friday": "14:00",
+  *             "saturday": "09:30",
+  *             "sunday": "null",
   *             "childId": 1
   *           },
   *           "chores": [
@@ -320,8 +334,13 @@ const routes = (app) => {
   *         "name": "Winston"
   *       },
   *       "schedule": {
-  *             "defaultCurfews": [null, "18:30", "14:30", "17:00", "22:00", "17:00", null]
-  *       }
+  *         "monday": "null",
+  *         "tuesday": "12:30",
+  *         "wednesday": "14:05",
+  *         "thursday": "18:30",
+  *         "friday": "14:00",
+  *         "saturday": "09:30",
+  *         "sunday": "null"
   *     }
   *
   * @apiSuccess {String} Successfully added chore.
