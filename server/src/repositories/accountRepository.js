@@ -101,7 +101,8 @@ const accountRepository = {
               'title',
               'details',
               'date',
-              'childId'],
+              'childId',
+              'completed'],
           }, {
             model: Schedule,
             attributes: {
