@@ -31,9 +31,8 @@ passport.use(new AmazonTokenStrategy(
         username: profile.displayName,
         email,
       },
-    }, email);
-
-    next(null, profile);
+    }, email)
+    .then(() => next(null, profile));
   }));
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((obj, done) => done(null, obj));
